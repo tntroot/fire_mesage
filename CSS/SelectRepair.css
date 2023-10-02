@@ -1,0 +1,291 @@
+.tablelist{ 
+    /*表格設定*/
+    text-align: center;
+    margin:0 auto;
+    font-size: 30px;
+    text-align: left;
+    width: 80%;
+    line-height: 2.5vw; /*行高設定*/
+    border-collapse:collapse;
+    border-spacing: 0vw; /* 表格內欄位 水平 垂直間距 */
+    border-radius:  1vw; /* 表格四角圓角 */
+    display: inline-flexbox;
+    font-weight: 600; /* 字體粗細程度 */
+    background-color: #ffffff;
+}
+.seart1{
+    /* 表格外容器設定 */
+    padding: 4% 3% 2% 3%;
+}
+.trtitle{
+    /* 表格項目標題設定 */
+    background-color: #F4F2FF;
+    color: #616893;
+    font-size: 1vw;
+}
+.buildinglist{
+    /* 表格項目設定 */
+    color: #787878;
+    font-size: 1vw;
+}
+.checked{
+    border-bottom: #d9d5ec91 2px solid;
+    border-top: #d9d5ec91 2px solid;
+}
+.checkbox{
+    accent-color: #F4F2FF;
+    padding-left: 0.5vw;
+    zoom: 160%;
+}
+.print{
+    /* 列印與上傳按鈕位置設定 */
+    margin: 0.5vw 3vw 0.5vw 0vw;
+    float: right;
+    cursor: pointer;
+    background-image: url('../IMG/ShowBuilding/Print.png');
+    background-size: contain;
+    width: 7.7vw;
+    height: 2.5vw;
+    background-repeat:no-repeat;
+}
+.update{
+    /* 列印與上傳按鈕位置設定 */
+    margin: 0.5vw 1.5vw 0.5vw 0vw;
+    float: right;
+    cursor: pointer;
+    background-image: url('../IMG/ShowBox/Update.png');
+    background-size: contain;
+    width: 7.7vw;
+    height: 2.5vw;
+    background-repeat:no-repeat;
+}
+
+.BoxSwitch{ /* 切換查詢 */
+    display: flex;
+    padding: 0.2vw;
+    border: 2px black solid;
+    width: fit-content;
+    border-radius: 50vw;
+    margin-right: 1vw;
+}
+.BoxSwitchON{ /*  點擊後樣式 */
+    padding: 0.5vw 3.5vw 0.5vw 3.5vw;
+    background-color:#333333;
+    color:white;
+    font-weight:bolder;
+    border-radius: 50vw;
+    font-size: 1vw;
+    border: none;
+}
+.BoxSwitchOFF{ /*  未點擊樣式 */
+    padding: 0.5vw 3.5vw 0.5vw 3.5vw;
+    background-color: transparent;
+    font-size: 1vw;
+    border-radius: 50vw;
+    border: none;
+    cursor: pointer;
+}   
+
+/* .BoxSwitch{
+    background-image: url('../IMG/ShowReport/ReportSwitchBtn.png');
+    border: 0;
+    border-radius: 50vw;
+    width: 20vw;
+    height: 2.08vw;
+    background-position: center center;
+    background-size:contain;
+    background-repeat:no-repeat;
+    cursor: pointer;
+    margin-top: 1vw;
+} */
+.showContent{
+    /*在選擇框的最右側中間顯示小箭頭圖片*/
+  /* background: url("../IMG/ShowSupplier/chevron-down.png") no-repeat scroll right center transparent; */
+  /*為下拉小箭頭留出一點位置，避免被文字覆蓋*/
+  cursor: pointer;
+}
+
+.OverNotes{
+    /* 單行超出範圍就會出現… */
+    /* overflow:hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis; */
+
+    /* 多行省略 */
+    display: -webkit-box; /*值必須為-webkit-box或者-webkit-inline-box*/
+    -webkit-box-orient: vertical; /*值必須為vertical*/
+    -webkit-line-clamp: 1; /*值為數字，表示一共顯示幾行*/
+    overflow: hidden; /* 滾動條隱藏 */
+    border: none;
+    padding-right: 1.5vw;
+    position: relative;
+}
+.OverNotes div{ /* 對話框樣式 */
+    display: none;
+    position: fixed;
+    transform: translate(1.5vw,2.5vw);
+    width: 13vw;
+    color: rgb(94, 94, 94);
+    font-weight: bold;
+    font-size: 1vw;
+    line-height: 1.5vw;
+    background-color: #F8F8F8;
+    background-repeat:no-repeat ;
+    padding: 0.5vw 1vw 0.5vw 1vw;
+    border-radius: 20px;
+    z-index: 999;
+    white-space: pre-line;
+    border: #9F9F9F 1px solid;
+}
+.OverNotes div::before{ /* 顯示對話框上的三角形圖案 */
+    content: "\25B2";
+    line-height: normal;
+    transform: translate(1vw,-1.5vw);
+    width: 0;
+    height: 0;
+    position: fixed;
+    font-size: 1.3vw;
+    color: #F8F8F8;
+    text-shadow: 0px -2px  #9F9F9F;
+}
+
+/* 換頁設定 */
+.page{
+    display: flex;
+    float: right;
+    padding: 0.5vw 4vw 0.5vw 2vw;
+    width: 10vw;
+}
+.page_button{
+    background: transparent; /* 設定背景為透明 */
+    color: #6E6893;
+    font-size: 1.5vw;
+    border: none;
+    margin: 0vw 2vw 0vw 2vw;
+    cursor: pointer;
+}
+.page_nuber{ /* 顯示?筆 */
+    font-size: 1.5vw;
+    color: #6E6893;
+    font-weight: bolder;
+}
+
+/* 新增或修改設定 */
+.post_check{
+    display: none;
+    position: fixed;
+    margin: 0 auto;
+    padding: 1vw;
+    top: 50%;left: 50%;
+    transform: translate(-50%,-50%);
+    background-color: white;
+    border: black 1px solid;
+    border-radius: 1vw;
+    text-align: center;
+    font-size: 1vw;
+    z-index: 100;
+}
+.post_check div button, .post_check button{
+    padding: 0.5vw 1vw 0.5vw 1vw;
+    background-color: #333333;
+    color: white;
+    font-size: 1vw;
+    border-radius: 2vw;
+    font-weight: bolder;
+    cursor: pointer;
+    border: none;
+}
+
+@media print {/* 列印設定 */
+    * {
+        white-space: normal;
+      -webkit-print-color-adjust: exact !important; /* 顏色正常顯示 */
+        font-size: 0.1vw;
+        margin: 0;
+        padding: 1vw;
+    }
+    .noBreak {
+        break-inside: avoid; /* 不會被分頁切割 */
+    }
+    .noPrint {
+        display: none; /* 不想印出 Pagination */
+    }
+
+    /* 這邊設定要讓哪些列印出來 */
+    .nav {
+        display: none;
+    }
+    .clearfix{
+        display: none;
+    }
+    .Menu_Home{
+        display: none;
+    }
+    .printbox{
+        display: none;
+    }
+    .nullbox{
+        display: none;
+    }
+    .checkbox{
+        display: none;
+    }
+    .seart1{
+        border: none;
+        width: 100%;
+        left: 0%;
+        top: 0%;
+        padding: 0;
+    }
+    .page{
+        display: none;
+    }
+    #Boxhead{
+        padding: 1vw;
+    }
+    #selectform{
+        font-size: 0.5vw;
+    }
+    .showContent img{
+        display: none;
+    }
+
+    .tablelist{
+        width: 100%;
+    }
+    /* .trtitle>th+th{
+        width: 11%; 
+    }
+    .trtitle>th+th~th{
+        width: 5%;
+    }
+    .trtitle>th+th~th+th+th{
+        width: 12%;
+    }
+    .trtitle>th+th~th+th+th+th{
+        width: 15%;
+    }
+    .trtitle>th+th~th+th+th+th+th{
+        width: 20%;
+    }
+    .trtitle>th+th~th+th+th+th+th+th{
+        width: 20%;
+    } */
+    
+    
+}
+@page {
+    size: A4 portrait; /* 直向列印 ，Landscape 橫向列印*/
+}
+
+.bg_light{
+    /* 背景變暗 */
+    display: none;
+    position: fixed;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.274);
+    z-index: 50;
+}

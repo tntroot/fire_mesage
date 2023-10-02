@@ -1,0 +1,97 @@
+/* 表格調整 */
+.Body_Table{
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 5%;
+    border: 1px #D9D5EC solid;
+    box-sizing: border-box;
+    font-size: 20px;
+}
+.Body_Table thead tr {
+    background-color: #F4F2FF;
+    color: #6E6893;
+}
+.Body_Table thead tr th{
+    padding: 0.5% 1% 0.5% 1%;
+    border-bottom: 1px #D9D5EC solid;
+}
+.Body_Table_button{
+    padding: 10px 20px 10px 20px;
+    background-color: #333333;
+    color: white;
+    font-size: 20px;
+    border-radius: 45px;
+    font-weight: bolder;
+}
+.Body_Table tbody tr td{
+    padding: 10px 0px 10px 0px;
+    border-bottom: 1px #D9D5EC solid;
+    background-color: white;
+}
+.tb_tr_button{
+    background-color: transparent;
+    border: none;
+    margin: 0px 30px 0px 20px;
+    cursor: pointer;
+}
+.select_type{
+    font-size: 20px;
+    background-color: transparent;
+    border: none;
+    color: #6E6893;
+    font-weight: bolder;
+    outline: none;
+}
+
+
+.report_supplier_show{
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -187px;
+    margin-left: -233px;
+    background-color: white;
+    font-size: 20px;
+    padding: 1% 3% 1.5% 3%;
+    box-sizing: border-box;
+    border-radius: 40px;
+    z-index: 150;
+}
+.input_text{
+    font-size: 20px;
+    border: none;
+    border-bottom: #757575 3px solid;
+    background-color: #FAFAFA;
+    padding: 10px;
+    outline: none;
+}
+
+.insert_button_switch{
+    border: #645B5B 1px solid;
+    border-radius: 45px;
+    padding: 7px 0px 4px 0px;
+}
+.insert_button_onclick{
+    border-radius: 45px;
+    background-color: #403B58;
+    color: white;
+    font-weight: bolder;
+    cursor: pointer;
+    font-size: 20px;
+    padding: 1px 50px 1px 50px;
+}
+.insert_button_die{
+    background-color: white;
+    border: none;
+    border-radius: 45px;
+    cursor: pointer;
+    font-size: 20px;
+    padding: 1px 50px 1px 50px;
+}
+
+.click_insert{
+    float: left;
+    text-align: left;
+    vertical-align: middle;
+}

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script>
+        //菜單載入
+        $(document).ready(function () {
+            $('#left').load('Menu.html',function(){
+                MenuNumber(11);
+            });
+        });
+    </script>
+    <link rel="shortcut icon" type="image/x-icon" href="../IMG/Home/icon/logo256.ico" />
+    <link href="../CSS/Home.css" rel="stylesheet" type="text/css"/>
+    <link href="../CSS/MesageLocation.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    <script src="../JS/functions.js"></script>
+    <style>
+        .post_supplier,.post_check,.insert_supplier_button,.post_supplier_button{
+            border: none;
+        }
+    </style>
+    <title>管理位置！</title>
+</head>
+<body  class="Home_BG" onload="showBuilding()">
+    <!-- 背景變暗 -->
+    <div id="bg_light" class="bg_light" tabindex="-1" onclick="die()"></div>
+    
+    <!-- 菜單 -->
+    <div id="left"></div>
+    
+    <!-- 內容 -->
+    <div class="seart1">
+        <div class="selectdiv">
+            <div id="showContent" class="showContent">
+                <div id="showContent1" title="" style="vertical-align: middle;" >請選擇大樓</div>
+                <img src="../IMG/ShowPowder/Vector1.png" width="36vw" height="20vw" >
+            </div>
+            <select class="selectform" id="selectform">
+                <option value="" disabled selected style="display: none;"></option>
+            </select>
+        </div>
+        <div id="location"></div>   <!-- 把位置放在這 --> 
+    </div>
+
+    <!-- 報廢位置 -->
+    <div class="post_supplier" tabindex="-1">
+        <h2 style="text-align: center;font-size: 1.5vw;margin-bottom: 2vw;">確定要廢棄嗎？</h2>
+        <p style="display: flex;justify-content: space-around;width: 20vw;">
+            <button class="insert_supplier_button" style="background-color: #908888;" onclick="die()">否</button>
+            <button class="insert_supplier_button" onclick="Scrapped_looding()">是</button>
+        </p>
+    </div>
+
+    <!-- 判定是否報廢成功 -->
+    <div id="post_check" tabindex="-1" class="post_check">
+        
+    </div>
+
+    <script>
+        let showContent = document.getElementById('showContent');
+        let selContent = document.getElementById('selectform');
+        showContent.onclick = function(e){
+            selContent.style.display = 'block';
+            if(selContent.options.length>5){selContent.size=5}
+            else{selContent.size=selContent.options.length}
+            selContent.focus();
+        }
+        selContent.onblur = function(e){
+            selContent.style.display = 'none';
+        }
+        
+        selContent.onchange = function(e){
+            var option = this.options[this.selectedIndex];
+            if(option.value==""){
+                showContent.children[0].innerText =option.title;
+                showContent.children[0].title ="";
+            }else{
+                showContent.children[0].innerHTML =option.text; 
+                showContent.children[0].title =option.value;   
+            }
+            selContent.style.display = 'none';
+            // numArr 抓當前大樓樓層(只取數字)
+            var numArr = option.title.match(/\d+/g).map(Number);
+            showContent.dataset.build_floor=numArr;
+            Selectform(option.value,showContent.dataset.build_floor);    
+        }
+    </script>
+
+    <script>
+        let Page="0", // 當前頁數 
+            dataLen, // 顯示資料長度
+            dataLen_Max=0, // 顯示資料總數
+            endPage, //取得總比數
+            x=0,y=0; // 處理下拉式資料，避免重複新增
+        localStorage.clear(); //清空儲存資料
+        
+        //從API獲得大樓資訊 大樓API
+        function showBuilding(){
+            fetch(DataAPI+'showBuilding.php?Page='+ "0")
+            .then( response => response.json() )
+            .then( data => {
+
+                var el = document.getElementById("seart1");
+                if(data["status"]=="fail"){
+                    el.innerHTML=errordata[data["data"]];
+                    console.log(errordata[data["data"]]);
+                }else{
+                    console.log(data);
+                    dataLen = data["data"].length; //資料長度
+                    var str = ""; //建立一個空字串，要將資料填入的
+
+                    var selectform=document.getElementById("selectform");
+                    var select_location=[],
+                        select_location1; // 去除重複元素用
+                    dataLen_Max=dataLen;
+                    endPage=Math.ceil(dataLen_Max/10); //無條件進位                    
+
+                    //$("#selectform").empty(); // 清除下拉式選單中所有的資料   
+                    for (var i=0; i<dataLen_Max; i++){ // 將 Building 欄位所有資料存在陣列，
+                        if(data["data"][i].Building==null){
+                            continue;
+                        }
+                        select_location[select_location.length]=data["data"][i].Building;
+                    };
+                    select_location1=[...new Set(select_location)]; // 去除重複元素
+                    for (var i=0; i<select_location1.length;i++){ // 將陣列中的元素加在下拉式選單裡                       
+                        selectform.add(new Option(select_location1[i],select_location1[i]));  
+                        selectform.options[i+1].title=data["data"][i].Floor;                                     
+                    }        
+                }
+            });
+        }
+
+        //篩選器
+        function Selectform(Build,Floor){
+            // numArr 抓當前大樓樓層(只取數字)
+            Floor=Floor.match(/\d+/g).map(Number);
+            var L_Floor=Floor[0], //樓上
+                B_Floor=Floor[1]; //地下
+
+            fetch(DataAPI+'showLocation.php?Building='+ Build)
+            .then( response => response.json() )
+            .then( data => {
+                
+                var el=document.getElementById('location');
+                
+                console.log(B_Floor);
+                var str=""; //父層
+                var dataLen=data["data"].length;
+                for(let i=B_Floor;i>0;i--){
+                    var str_content=""; //子曾
+                    var B_Floor_ABS=-Math.abs(i); //轉負數
+                    for(let j=0;j<dataLen;j++){  
+                        if(data["data"][j].Floor==B_Floor_ABS){ //樓層比對
+                            if (data["data"][j].Pair=="下架" || data["data"][j].Pair==null){
+                                var content = "<div class='location_nopair'>"
+                                        +"<img src='../IMG/ShowBuilding/Screen.png' width='25vw' style='vertical-align: sub;cursor: pointer' data-num='"+data["data"][j].Num+"' onclick='Scrapped(this)'>"
+                                        +"&nbsp;"+"<span ondblclick='twoclick(this)' data-floor='"+B_Floor_ABS+"' data-name='"+data["data"][j].location+"'>"+data["data"][j].location+"</span>"
+                                        +"</div>";
+                            }else{
+                                var content = "<div class='location_pair'>"
+                                        +data["data"][j].location+"</div>";
+                            }
+                            str_content=str_content+content;
+                        }
+                    }
+                    str=str+"<div class='location'>"
+                        +"<h1>"+"地下"+i+"樓"+"</h1>"
+                        +"<div style='display: flex;flex-wrap: wrap;'>"+str_content
+                            +"<div class='location_pair' style='background-color: #EDEDED;cursor: pointer;' onclick='insert_Location(this)' data-floor='"+B_Floor_ABS+"'>"
+                                +"＋ 請輸入位置名稱"+"</div>"+"</div>"+"</div>";
+                }
+                for(let i=1;i<=L_Floor;i++){
+                    var str_content=""; //子曾
+                    for(let j=0;j<dataLen;j++){
+                        if(data["data"][j].Floor==i){ //樓層比對
+                            if (data["data"][j].Pair=="下架" || data["data"][j].Pair==null){
+                                var content = "<div class='location_nopair'>"
+                                        +"<img src='../IMG/ShowBuilding/Screen.png' width='25vw' style='vertical-align: sub;cursor: pointer' data-num='"+data["data"][j].Num+"' onclick='Scrapped(this)'>"
+                                        +"&nbsp;"+"<span ondblclick='twoclick(this)' data-floor='"+i+"' data-name='"+data["data"][j].location+"'>"+data["data"][j].location+"</span>"
+                                        +"</div>";
+                            }else{
+                                var content = "<div class='location_pair'>"
+                                        +data["data"][j].location+"</div>";
+                            }
+                            str_content=str_content+content;
+                        }
+                    }
+                    str=str+"<div class='location'>"
+                        +"<h1>"+i+"樓"+"</h1>"
+                        +"<div style='display: flex;flex-wrap: wrap;'>"+str_content
+                            +"<div class='location_pair' style='background-color: #EDEDED;cursor: pointer;' onclick='insert_Location(this)' data-floor='"+i+"'>"
+                                +"＋ 請輸入位置名稱"+"</div>"+"</div>"+"</div>";
+                }
+                el.innerHTML=str;
+            
+            });
+        };
+        //按兩下編輯
+        let  two_number=1; //禁止重複點集
+        function twoclick(index){
+            if(two_number==1){
+                var val=index.innerHTML;
+                var input=document.createElement("input");
+                input.value=val; 
+                input.onblur=function(){       
+                    var selectform = document.getElementById('selectform').value;
+                    var values=this.value;
+
+                    fetch(DataAPI+'correctLocation.php',{
+                        method:"POST", 
+                        mode: "no-cors", //需添加這段才能發送請求
+                        headers: {
+                            'Accept': 'application/json, text/plain, */*',
+                            'Content-Type': "application/x-www-form-urlencoded"
+                        },
+                        // 原本是 JSON 檔，需轉成 formdate 後台才接的到參數，jquery 會自動幫你轉
+                        body:"Building="+selectform+
+                            "&Floor="+index.dataset.floor+
+                            "&Location="+index.dataset.name+
+                            "&New_Location="+values
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if(data["status"]=="fail"){
+                            index.innerHTML=index.dataset.name;
+                            console.log(errordata[data["data"]]);
+                        }else{
+                            console.log(data);
+                            index.innerHTML=values;
+                            index.dataset.name=values;
+                        }
+                        two_number=1;
+                    });   
+                };
+                index.innerHTML="";
+                index.appendChild(input);
+                input.focus();
+                input.style="width: 5vw;padding:0.3vw;font-size:1vw;";
+                two_number=2;
+            } 
+        }
+
+        //新增位置
+        function insert_Location(index){
+            if(two_number==1){              
+                var input=document.createElement("input");
+                input.onblur=function(){       
+                    var selectform = document.getElementById('selectform');
+                    var values=this.value;
+
+                    fetch(DataAPI+'addLocation.php',{
+                        method:"POST", 
+                        mode: "no-cors", //需添加這段才能發送請求
+                        headers: {
+                            'Accept': 'application/json, text/plain, */*',
+                            'Content-Type': "application/x-www-form-urlencoded"
+                        },
+                        // 原本是 JSON 檔，需轉成 formdate 後台才接的到參數，jquery 會自動幫你轉
+                        body:"Building="+selectform.value+
+                            "&Floor="+index.dataset.floor+
+                            "&Location="+values
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if(data["status"]=="fail" || values==""){
+                            if(values!=""){
+                                alert('該位置已被使用或已被報廢');
+                            };
+                            index.innerHTML="＋ 請輸入位置名稱";
+                            console.log(errordata[data["data"]]);
+                        }else{
+                            console.log(data);
+                            Selectform(selectform.value,showContent.dataset.build_floor);
+                        }
+                        two_number=1;
+                    });   
+                };
+                index.innerHTML="";
+                index.appendChild(input);
+                input.focus();
+                input.style="width: 5vw;padding:0.3vw;font-size:1vw;";
+                two_number=2;
+            }
+        }
+    </script>
+    <script>
+        var bg_light=document.getElementById("bg_light");
+
+        //報廢介面
+        function Scrapped(index){
+            var post_supplier=document.getElementsByClassName('post_supplier');
+            post_supplier[0].style.display='block';
+            bg_light.style.display='block';
+            post_supplier[0].dataset.num=index.dataset.num;
+        }
+
+        //檢查是否報廢成功
+        function Scrapped_looding(){
+            var post_check=document.getElementById('post_check');
+            var post_supplier=document.getElementsByClassName('post_supplier');
+            var selectform = document.getElementById('selectform');
+
+            fetch(DataAPI+'ScrappedBox.php',{
+                method:"POST", 
+                mode: "no-cors", //需添加這段才能發送請求
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': "application/x-www-form-urlencoded"
+                },
+                // 原本是 JSON 檔，需轉成 formdate 後台才接的到參數，jquery 會自動幫你轉
+                body:"Num="+post_supplier[0].dataset.num
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                post_check.style.display='block';
+                post_supplier[0].style.display="none";
+
+                if(data["status"]=="fail"){
+                    post_check.innerHTML='<h2>'+'報廢失敗'+'</h2>'+"<h2>"+errordata[data["data"]]+"</h2>"+
+                        "<button style='background-color: #333333;' onclick='this.parentNode.style.display=&apos;none&apos;this.parentNode.parentNode.children[0].style.display=&apos;none&apos'>"+"確定"+"</button>";
+                    post_check.style.padding="1vw 5vw 1vw 5vw";
+                }else{
+                    post_check.innerHTML='<h2>'+'報廢成功'+'</h2>'+"<img src='../IMG/ShowBox/Update_yes.png' width='75vw'>"; 
+                    post_check.style.padding="1vw 5vw 1vw 5vw";
+                    setTimeout("Selectform(selectform.value,showContent.dataset.build_floor);post_check.style.display='none';bg_light.style.display='none'",1000); //1秒之後跳轉頁面
+                }
+            }); 
+        }
+
+        function die(){
+            var post_supplier=document.getElementsByClassName('post_supplier');
+            var post_check=document.getElementsByClassName("post_check");
+            post_check[0].style.display="none";
+            post_supplier[0].style.display='none';
+            bg_light.style.display="none";
+        }
+        
+    </script>   
+</body>
+</html>

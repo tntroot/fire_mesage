@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script>
+        //菜單載入
+        $(document).ready(function () {
+            $('#left').load('Menu.html',function(){
+                MenuNumber(12);
+            });
+        });
+    </script>
+    <link rel="shortcut icon" type="image/x-icon" href="../IMG/Home/icon/logo256.ico" />
+    <link href="../CSS/Home.css" rel="stylesheet" type="text/css"/>
+    <link href="../CSS/MesageSupplier.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    <script src="../JS/functions.js"></script>
+    <style>
+        .post_supplier,.post_check,.insert_supplier_button,.post_supplier_button{
+            border: none;
+        }
+        .page_nuber{
+            font-weight: normal;
+        }
+    </style>
+    <title>管理廠商！</title>
+</head>
+<body  class="Home_BG" onload="showSupplier('','0')">
+    <!-- 背景變暗 -->
+    <div id="bg_light" class="bg_light" tabindex="-1" onclick="die()"></div>
+
+    <!-- 菜單 -->
+    <div id="left"></div>
+    
+    <!-- 內容 -->
+    <div class="seart1">
+        <table class="tablelist" style="border: 0.15vw #f4f2ff solid;border: 1;" rules="rows">
+            <thead>
+                <tr class="printbox">
+                    <th colspan="4">
+                        <button onclick="insert_supplier()">新增</button>
+                    </th>
+                </tr>                
+                <tr class="trtitle">
+                    <th width="10%" class="checkbox">&nbsp;</th>
+                    <th width="15%">
+                        <select class="selectform" id="selectform" onchange="Selectform('0')">
+                            <option value="">類型</option>
+                            <option value="藥粉廠商">藥粉廠商</option>
+                            <option value="瓶子廠商">瓶子廠商</option>
+                        </select>
+                    </th>
+                    <th width="40%">廠商名稱</th>
+                    <th>連絡電話</th>
+                </tr>
+            </thead>
+            <tbody class="buildinglist" id="list">
+            
+            </tbody>
+            <tr style="background-color: #F4F2FF;">
+                <td colspan="5">
+                    <div class="page">
+                        <button class="page_button" onclick="PageOn1(1)"><</button>
+                        <span id="page_nuber" class="page_nuber"></span>
+                        <button class="page_button" onclick="PageOn2(1)">></button> 
+                    </div>
+                    &nbsp;
+                </td>
+            </tr>
+            <tfoot id="print_click" class="buildinglist" style="display: none;">
+                
+            </tfoot>
+        </table>
+    </div>
+
+    <!-- 修改廠商 -->
+    <div id="post_supplier" class="post_supplier" tabindex="-1">
+        <h1 style="text-align: center;font-size: 2vw;">修改廠商</h1>
+        
+        <!-- 使用 form 表單時，input 和 button 的 type 要定義，不然都會被當成 submit -->
+        <!-- onkeypress 阻止用戶按 Enter 時送出 -->
+        <form action="#" method="post" onsubmit="return post_looding();" onkeypress="if (event.keyCode == 13) {return false;}">
+            <p id=""  style="margin-bottom: 1vw;">
+                <span >廠商類型：&nbsp;&nbsp;</span>
+                <select id="SupplierType">
+                    <option value="藥粉廠商">藥粉廠商</option>
+                    <option value="瓶子廠商">瓶子廠商</option>
+                </select>
+            </p>
+            <p style="margin-bottom: 0vw;">
+                <span>廠商名稱：</span> <!-- 0 -->
+                <input class="post_supplierbox" type="text" placeholder="" required maxlength="30" oninvalid="this.setCustomValidity('請填寫廠商名稱')" oninput="this.setCustomValidity('')" onblur="Build_Short_Check(0)">
+            </p>
+            <p class="Building_error"></p>
+            <p style="margin-bottom: 0vw;">
+                <span>廠商電話：</span> <!-- 1 -->
+                <input class="post_supplierbox" type="tel" placeholder="" required  minlength="9" maxlength="10" onblur="Build_Short_Check(1)" pattern="[0]{1}[0-9]{9}">
+            </p>
+            <p class="Building_error"></p>
+            <p style="display: flex;justify-content: space-evenly;">
+                <input type="button" class="post_supplier_button" style="background-color: #908888;" onclick="die()" value="取消">
+                <input type="submit" class="post_supplier_button" value="修改">
+            </p>
+        </form>
+    </div>
+
+    <!-- 新增廠商 -->
+    <div class="post_supplier" tabindex="-1">
+        <h1 style="text-align: center;font-size: 2vw;">新增廠商</h1>
+        
+        <!-- 使用 form 表單時，input 和 button 的 type 要定義，不然都會被當成 submit -->
+        <!-- onkeypress 阻止用戶按 Enter 時送出 -->
+        <form action="#" method="post" onsubmit="return insert_check();" onkeypress="if (event.keyCode == 13) {return false;}">
+            <input type="button" id="InsertSupplierType" class="InsertSupplierType" onclick="SupplierSwitch()">
+            <p style="margin-bottom: 0vw;">
+                <span>廠商名稱：</span> <!-- 2 -->
+                <input class="post_supplierbox" style="width: 12vw;" type="text" placeholder="請輸入廠商名稱" required maxlength="20" oninvalid="this.setCustomValidity('請填寫廠商名稱')" oninput="this.setCustomValidity('')" onblur="Build_Short_Check(2)">
+            </p>
+            <p class="Building_error"></p>
+            <p style="margin-bottom: 0vw;">
+                <span >廠商電話：</span> <!-- 3 -->
+                <input class="post_supplierbox" style="width: 12vw;" type="tel" placeholder="請輸入廠商電話" required minlength="9" maxlength="10" onblur="Build_Short_Check(3)" pattern="[0]{1}[0-9]{9}">
+            </p>
+            <p class="Building_error"></p>
+            <p style="display: flex;justify-content: space-evenly;">
+                <input type="button" class="post_supplier_button" style="background-color: #908888;" onclick="die()" value="取消">
+                <input type="submit" class="post_supplier_button" value="新增">
+            </p>
+        </form>
+    </div>
+
+    <!-- 確認新增廠商 -->
+    <div class="post_supplier" tabindex="-1">
+        <h2 style="text-align: center;font-size: 2vw;">確定要新增以下資訊嗎？</h2>
+        <div style="width: 35vw;display: flex;justify-content: space-evenly;">
+            <div class="click_insert">
+                <p>類型：換藥廠商</p>
+                <p>
+                    名稱：嗚嗚
+                </p>
+                <p>電話：0911111111</p>
+            </div>
+            <img width="200vw" style="margin-left:2vw;" src="../IMG/MesageSupplier/Insert.png">
+        </div>
+        <p style="display: flex;justify-content: space-evenly;">
+            <button class="insert_supplier_button" style="background-color: #908888;" onclick="document.getElementsByClassName('post_supplier')[2].style.display='none'">否</button>
+            <button class="insert_supplier_button" onclick="insert_looding()" >是</button>
+        </p>
+    </div>
+
+    <!-- 判定是否修改或新增成功 -->
+    <div id="post_check" tabindex="-1" class="post_check">
+        
+    </div>
+
+    <script>
+        let Page="1", // 當前頁數 
+            dataLen, // 顯示資料長度
+            dataLen_Max=0, // 顯示資料總數
+            endPage, //取得總比數
+            valueOn="", //取得篩選資料
+            strall = [];// 抓全部廠商資料，檢測用
+        localStorage.clear(); //清空儲存資料
+                  
+        var page_button=document.getElementsByClassName("page_button"),
+            page_nuber=document.getElementsByClassName("page_nuber");
+        
+        //從API獲得廠商資訊
+        function showSupplier(getType,Page){
+            fetch(DataAPI+'showSupplier.php?Type='+ getType + '&' + 'Page=' + Page)
+            .then( response => response.json() )
+            .then( data => {
+
+                var el = document.getElementById("list");
+                if(data["status"]=="fail"){
+                    el.innerHTML="<td colspan='5' style='padding-left:5vw'>"+errordata[data["data"]]+"</td>";
+                    console.log(errordata[data["data"]]);
+                }else{
+                    console.log(data);
+                    dataLen = data["data"].length; //資料長度
+                    var str = ""; //建立一個空字串，要將資料填入的
+                    var page_nuber=document.getElementById("page_nuber");
+
+                    if(Page=="0"){
+                        var selectform=document.getElementById("selectform");
+                        dataLen_Max=dataLen;
+                        Page="1";
+                        endPage=Math.ceil(dataLen_Max/10); //無條件進位                    
+                        strall=[];
+
+                        for (var i = 0; i < dataLen_Max; i++) {
+                            strall[strall.length]=[data["data"][i].Type,data["data"][i].NAME,data["data"][i].Phone];
+                        }
+
+                        showSupplier(valueOn,"1"); 
+                    }else{
+                       // for 迴圈
+                        for (var i = 0; i < dataLen; i++) {
+                            var content = "<tr class='checked nullbox'>" +  "<td class='checkbox'><img width='20vw' style='cursor: pointer;min-width:1vw;' src='../IMG/MesageSupplier/Edit.png' id='"+Page+i+"' name='items' onclick='post_supplierall(this);'></td>" + 
+                                "<td id='"+data["data"][i].ID+"'>" + data["data"][i].Type +"</td>" + 
+                                "<td style='padding-right:2vw;'>" + data["data"][i].NAME + "</td>"+
+                                "<td>"+ data["data"][i].Phone + "</td>" + "</tr>"; //組字串
+                            str += content; // 透過加總把 變數 content 的內容回傳到 str 中
+                        }
+                        el.innerHTML = str;
+                        //透過 el 選取到的 list，透過 innerHTML 的方式，把 str 裡的資料渲染到網頁上
+                        page_nuber.innerHTML=Page; // 顯示頁數
+                        PageNumber(); 
+                        console.log(strall);                                         
+                    }        
+                }
+            });
+        }
+
+        //篩選器
+        function Selectform(Page1){
+            var myselect = document.getElementById('selectform');
+            var value = myselect.options[myselect.selectedIndex].value;
+            
+            valueOn=value;   
+            showSupplier(valueOn,Page1);   
+        }
+
+    </script>
+
+    <script>
+        var bg_light=document.getElementById("bg_light");
+
+        //修改廠商介面
+        function post_supplierall(index){
+            var post_supplier=document.getElementById("post_supplier");
+            post_supplier.style.display="block";
+            bg_light.style.display="block";
+            var Building_error=document.getElementsByClassName('Building_error');
+
+            var SupplierType=document.getElementById("SupplierType");
+            var post_supplierbox=document.getElementsByClassName("post_supplierbox");
+            SupplierType.parentNode.id=index.parentNode.nextSibling.id;
+            SupplierType.value=index.parentNode.nextSibling.innerText;
+            post_supplierbox[0].value=index.parentNode.nextSibling.nextSibling.innerText;
+            post_supplierbox[0].placeholder=index.parentNode.nextSibling.nextSibling.innerText;
+            post_supplierbox[1].value=index.parentNode.nextSibling.nextSibling.nextSibling.innerText;
+            post_supplierbox[1].placeholder=index.parentNode.nextSibling.nextSibling.nextSibling.innerText;
+            Building_error[0].innerText="";
+            Building_error[1].innerText="";
+        }
+
+        //檢查是否輸入重複資料
+        function Build_Short_Check(index){
+            var post_supplierbox=document.getElementsByClassName("post_supplierbox");
+            var post_supplier=document.getElementById("post_supplier");
+            var Building_error=document.getElementsByClassName('Building_error');
+
+            strall_lenght = strall.length;
+            Building_error[index].innerText="";
+            //Building_error[1].innerText="";
+            for(let i=0; i<strall_lenght; i++){
+                if(post_supplierbox[index].value==strall[i][1] && post_supplierbox[index].value!=post_supplierbox[index].placeholder){
+                    Building_error[index].innerText="廠商名稱已存在";
+                    break;
+                }else if(post_supplierbox[index].value==strall[i][2] && post_supplierbox[index].value!=post_supplierbox[index].placeholder){
+                    Building_error[index].innerText="電話已存在";
+                    break;
+                }
+            }     
+        }
+
+        //檢查是否修改成功
+        function post_looding(){
+            var post_supplierbox=document.getElementsByClassName("post_supplierbox");
+            var SupplierType=document.getElementById("SupplierType");
+            var post_check=document.getElementById('post_check');
+            var post_supplier=document.getElementById("post_supplier");
+            var Building_error=document.getElementsByClassName('Building_error');
+            
+            if(Building_error[0].innerText=="" && Building_error[1].innerText==""){
+                fetch(DataAPI+'correctSupplier.php',{
+                    method:"POST", 
+                    mode: "no-cors", //需添加這段才能發送請求
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-Type': "application/x-www-form-urlencoded"
+                    },
+                    // 原本是 JSON 檔，需轉成 formdate 後台才接的到參數，jquery 會自動幫你轉
+                    body:"Name="+post_supplierbox[0].placeholder+
+                        "&New_Name="+post_supplierbox[0].value+
+                        "&Type="+SupplierType.value+
+                        "&Phone="+post_supplierbox[1].value+
+                        "&ID="+SupplierType.parentNode.id
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    post_check.style.display='block';
+                    if(data["status"]=="fail"){
+                        post_supplier.style.display="none";
+                        post_check.innerHTML='<h2>'+'修改失敗'+'</h2>'+
+                            "<h2>"+errordata[data["data"]]+"</h2>"+
+                            "<button style='background-color: #333333;' onclick='location.href=&apos;&apos;'>"+"確定"+"</button>";
+                        post_check.style.padding="1vw 5vw 1vw 5vw";    
+                    }else{
+                        post_supplier.style.display="none";
+                        post_check.innerHTML='<h2>'+'修改成功'+'</h2>'+"<img src='../IMG/ShowBox/Update_yes.png' width='75vw'>"; 
+                        post_check.style.padding="1vw 5vw 1vw 5vw";
+                        setTimeout("location.href=''",3000); //三秒之後跳轉頁面
+                    }
+                }); 
+            }
+            return false;
+        }
+        //新增廠商
+        function insert_supplier(){
+            var post_supplier=document.getElementsByClassName('post_supplier');
+            post_supplier[1].style.display='block';
+            bg_light.style.display='block';
+        }
+        //確認新增
+        function insert_check(){
+            var post_check=document.getElementById('post_check');
+            var post_supplierbox=document.getElementsByClassName("post_supplierbox");
+            var Building_error=document.getElementsByClassName('Building_error');
+            
+            if(Building_error[2].innerText=="" && Building_error[3].innerText==""){
+                var post_supplier=document.getElementsByClassName('post_supplier')[2];
+                var click_insert=document.getElementsByClassName('click_insert');
+                var post_supplierbox=document.getElementsByClassName('post_supplierbox');
+                post_supplier.style.display='block';
+                click_insert[0].innerHTML="<p>"+"類型："+TheSupplierSwitch+"</p>"+
+                    "<p>"+"名稱："+post_supplierbox[2].value+"</p>"+
+                    "<p>"+"電話："+post_supplierbox[3].value+"</p>";
+            }
+            return false;
+        }
+        //檢查是否新增成功
+        function insert_looding(){
+            var post_supplier=document.getElementsByClassName('post_supplier');
+            var post_supplierbox=document.getElementsByClassName('post_supplierbox');
+            fetch(DataAPI+'addSupplier.php',{
+                    method:"POST", 
+                    mode: "no-cors", //需添加這段才能發送請求
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-Type': "application/x-www-form-urlencoded"
+                    },
+                    // 原本是 JSON 檔，需轉成 formdate 後台才接的到參數，jquery 會自動幫你轉
+                    body:"Name="+post_supplierbox[2].value+
+                        "&Type="+TheSupplierSwitch+
+                        "&Phone="+post_supplierbox[3].value
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    post_check.style.display='block';
+                    if(data["status"]=="fail"){
+                        post_supplier[1].style.display="none";
+                        post_supplier[2].style.display="none";
+                        post_check.innerHTML='<h2>'+'新增失敗'+'</h2>'+
+                            "<h2>"+errordata[data["data"]]+"</h2>"+
+                            "<button class='insert_supplier_button' style='background-color: #333333;' onclick='location.href=&apos;&apos;'>"+"確定"+"</button>";
+                        post_check.style.padding="1vw 5vw 1vw 5vw";    
+                    }else{
+                        post_supplier[1].style.display="none";
+                        post_supplier[2].style.display="none";
+                        post_check.innerHTML='<h2>'+'新增成功'+'</h2>'+"<img src='../IMG/ShowBox/Update_yes.png' width='75vw'>"; 
+                        post_check.style.padding="1vw 5vw 1vw 5vw";
+                        setTimeout("location.href=''",3000); //三秒之後跳轉頁面
+                    }
+                }); 
+        }
+
+        // 新增廠商，廠商切換
+        let TheSupplierSwitch='瓶子廠商';
+        function SupplierSwitch(){
+            var InsertSupplierType=document.getElementById('InsertSupplierType');
+            if(TheSupplierSwitch=='瓶子廠商'){
+                InsertSupplierType.style.backgroundImage="url('../IMG/MesageSupplier/PowerSupplier.png')"
+                TheSupplierSwitch='藥粉廠商';
+            }else{
+                InsertSupplierType.style.backgroundImage="url('../IMG/MesageSupplier/FireSupplier.png')"
+                TheSupplierSwitch='瓶子廠商';
+            }      
+        }
+        function die(){
+            var post_supplier=document.getElementsByClassName("post_supplier");
+            if(post_supplier[2].style.display=="block"){
+                post_supplier[2].style.display="none";
+            }else{
+                post_supplier[0].style.display="none";
+                post_supplier[1].style.display="none"; 
+                bg_light.style.display="none"; 
+            } 
+        }       
+    </script>
+</body>
+</html>

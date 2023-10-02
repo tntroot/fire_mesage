@@ -1,0 +1,5 @@
+showPairHistory.php
+
+showPowder.php
+
+showFire2.php
