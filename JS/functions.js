@@ -1,4 +1,4 @@
-var DataAPI = '../PHP/API/';
+var DataAPI = 'http://localhost/Fire_mesage/PHP/API/';
 var errordata = ["連線失敗", "沒有接收到參數", "重複資料", "格式不符", "林偉倫在搞", "查無資料", "狀態不符合"];
 
 window.onload = function () {
