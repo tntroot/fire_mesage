@@ -1,0 +1,287 @@
+.tablelist{ 
+    /*表格設定*/
+    text-align: center;
+    margin:0 auto;
+    font-size: 30px;
+    text-align: left;
+    width: 80%;
+    line-height: 2.5vw; /*行高設定*/
+    border-collapse:collapse;
+    border-spacing: 0vw; /* 表格內欄位 水平 垂直間距 */
+    border-radius:  1vw; /* 表格四角圓角 */
+    display: inline-flexbox;
+    font-weight: 600; /* 字體粗細程度 */
+    background-color: #ffffff;
+}
+.seart1{
+    /* 表格外容器設定 */
+    padding: 4% 3% 2% 3%;
+}
+.trtitle{
+    /* 表格項目標題設定 */
+    background-color: #F4F2FF;
+    color: #616893;
+    font-size: 1vw;
+}
+.buildinglist{
+    /* 表格項目設定 */
+    color: #787878;
+    font-size: 1vw;
+}
+.checked{
+    border-bottom: #d9d5ec91 2px solid;
+    border-top: #d9d5ec91 2px solid;
+}
+.checkbox{
+    accent-color: #F4F2FF;
+    padding-left: 1vw;
+    zoom: 160%;
+}
+.print{
+    /* 列印與上傳按鈕位置設定 */
+    margin: 0.5vw 3vw 0.5vw 0vw;
+    float: right;
+    cursor: pointer;
+    background-image: url('../IMG/ShowBuilding/Print.png');
+    background-size: contain;
+    width: 7.7vw;
+    height: 2.5vw;
+    background-repeat:no-repeat;
+}
+.update{
+    /* 列印與上傳按鈕位置設定 */
+    margin: 0.5vw 1.5vw 0.5vw 0vw;
+    float: right;
+    cursor: pointer;
+    background-image: url('../IMG/ShowBox/Update.png');
+    background-size: contain;
+    width: 7.7vw;
+    height: 2.5vw;
+    background-repeat:no-repeat;
+}
+.abandoned{ /*切換廢棄與閒置狀態時廢棄欄位的顯示*/
+    display: none;
+}
+
+.BoxSwitch{
+    display: flex;
+    padding: 0.2vw;
+    border: 2px black solid;
+    width: fit-content;
+    border-radius: 50vw;
+}
+.BoxSwitchON{
+    padding: 0.5vw 2vw 0.5vw 2vw;
+    background-color:#333333;
+    color:white;
+    font-weight:bolder;
+    border-radius: 50vw;
+    border: none;
+    cursor: pointer;
+}
+.BoxSwitchOFF{
+    padding: 0.5vw 2vw 0.5vw 2vw;
+    background-color: transparent;
+    border-radius: 50vw;
+    border: none;
+    cursor: pointer;
+}
+
+.showContent{
+    /*在選擇框的最右側中間顯示小箭頭圖片*/
+  /* background: url("../IMG/ShowSupplier/chevron-down.png") no-repeat scroll right center transparent; */
+  /*為下拉小箭頭留出一點位置，避免被文字覆蓋*/
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  width: fit-content; /* 長度跟隨內容大小 */
+}
+
+.selectform, .selecttype{
+    /*Chrome和Firefox裡面的邊框是不一樣的，所以複寫了一下*/
+  /* border: solid 1px #000; */
+
+  /*很關鍵：將預設的select選擇框樣式清除*/ /**Larry */
+  appearance:none;
+  -moz-appearance:none;
+  -webkit-appearance:none;
+  color: #616893;
+  font-size: 1vw;
+  font-weight: 600;
+  text-align: left;
+  /* border: none; */
+  outline: none;
+  position: absolute;
+  display: none;
+  overflow-y: auto;
+
+}
+.selecttype{
+    position: relative;
+    display: table-cell;
+    border: none;
+    background-color: transparent;
+    /*在選擇框的最右側中間顯示小箭頭圖片*/
+    background: url("../IMG/ShowSupplier/chevron-down.png") no-repeat scroll right center transparent;
+    /*為下拉小箭頭留出一點位置，避免被文字覆蓋*/
+    padding-right: 2vw;
+    cursor: pointer;
+    background-size: 1vw;
+}
+/*清除ie的預設選擇框樣式清除，隱藏下拉箭頭*/ /**確認生效了！！！*/
+.selectform::-ms-expand{ 
+    display: none; 
+}
+.selectform{  
+    max-width: 22vw;   
+}
+.selectform::-webkit-scrollbar{
+    /* 更改滾動條粗細 */
+    height:0.4vw;
+    width: 0.4vw;
+}
+.selectform::-webkit-scrollbar-thumb{
+    /* 更改滾動條顏色 */
+    border-radius: 40vw;
+    background-color: #959292;
+}
+.selectform option,#showContent1{
+    padding: 0.2vw 2.5vw 0.2vw 0.5vw;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.selectform option:hover{
+    background-color: rgb(4 151 243);
+    color: white;
+}
+#showContent1{
+    padding: 0vw;
+    max-width: 20vw;
+}
+
+
+/* 換頁設定 */
+.page{
+    display: flex;
+    float: right;
+    padding: 0.5vw 4vw 0.5vw 2vw;
+    width: 10vw;
+}
+.page_button{
+    background: transparent; /* 設定背景為透明 */
+    color: #6E6893;
+    font-size: 1.5vw;
+    border: none;
+    margin: 0vw 2vw 0vw 2vw;
+    cursor: pointer;
+}
+.page_nuber{ /* 顯示?筆 */
+    font-size: 1.5vw;
+    color: #6E6893;
+    font-weight: bolder;
+}
+
+/* 新增或修改設定 */
+.post_check{
+    display: none;
+    position: fixed;
+    margin: 0 auto;
+    padding: 1vw;
+    top: 50%;left: 50%;
+    transform: translate(-50%,-50%);
+    background-color: white;
+    border: black 1px solid;
+    border-radius: 1vw;
+    text-align: center;
+    font-size: 1vw;
+    z-index: 100;
+}
+.post_check div button, .post_check button{
+    padding: 0.5vw 1vw 0.5vw 1vw;
+    background-color: #333333;
+    color: white;
+    font-size: 1vw;
+    border-radius: 2vw;
+    font-weight: bolder;
+    cursor: pointer;
+}
+
+@media print {/* 列印設定 */
+    * {
+      -webkit-print-color-adjust: exact !important; /* 顏色正常顯示 */
+        font-size: 0.5vw;
+        margin: 0;
+    }
+    .noBreak {
+        break-inside: avoid; /* 不會被分頁切割 */
+    }
+    .noPrint {
+        display: none; /* 不想印出 Pagination */
+    }
+
+    /* 這邊設定要讓哪些列印出來 */
+    .nav {
+        display: none;
+    }
+    .clearfix{
+        display: none;
+    }
+    .Menu_Home{
+        display: none;
+    }
+    .printbox{
+        display: none;
+    }
+    .nullbox{
+        display: none;
+    }
+    .checkbox{
+        display: none;
+    }
+    .seart1{
+        border: none;
+        width: 100%;
+        left: 0%;
+        top: 0%;
+        padding: 0;
+    }
+    .page{
+        display: none;
+    }
+    #Boxhead{ /* 1223 */
+        padding: 1vw;
+    }
+    #selectform{
+        font-size: 0.5vw;
+    }
+    .showContent img{
+        display: none;
+    }
+    #FireNumber{
+        width: 10%;
+        padding: 1vw;
+    }
+    .selecttype{
+        background: transparent;
+    }
+
+    .tablelist{
+        width: 100%;
+    }
+}
+@page {
+    size: A4 portrait; /* 直向列印 ，Landscape 橫向列印*/
+}
+
+.bg_light{
+    /* 背景變暗 */
+    display: none;
+    position: fixed;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.274);
+    z-index: 50;
+}

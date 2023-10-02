@@ -1,0 +1,446 @@
+.tablelist {
+    /*表格設定*/
+    text-align: center;
+    margin: 0 auto;
+    font-size: 30px;
+    text-align: left;
+    width: 80%;
+    line-height: 2.5vw;
+    /*行高設定*/
+    border-collapse: collapse;
+    border-spacing: 0vw;
+    /* 表格內欄位 水平 垂直間距 */
+    border-radius: 1vw;
+    /* 表格四角圓角 */
+    display: inline-flexbox;
+    font-weight: 600;
+    /* 字體粗細程度 */
+    background-color: #ffffff;
+}
+
+.seart1 {
+    /* 表格外容器設定 */
+    padding: 4% 3% 2% 3%;
+}
+
+.trtitle {
+    /* 表格項目標題設定 */
+    background-color: #F4F2FF;
+    color: #616893;
+    font-size: 1vw;
+}
+
+.buildinglist {
+    /* 表格項目設定 */
+    color: #787878;
+    font-size: 1.3vw;
+}
+
+.checked {
+    border-bottom: #d9d5ec91 2px solid;
+    border-top: #d9d5ec91 2px solid;
+}
+
+.checkbox {
+    accent-color: #F4F2FF;
+    padding-left: 0.5vw;
+    zoom: 160%;
+}
+
+.print {
+    /* 列印與上傳按鈕位置設定 */
+    margin: 0.5vw 3vw 0.5vw 0vw;
+    cursor: pointer;
+    background-image: url('../IMG/ShowBuilding/Print.png');
+    background-size: contain;
+    width: 7.7vw;
+    height: 2.5vw;
+    background-repeat: no-repeat;
+}
+
+.update {
+    /* 列印與上傳按鈕位置設定 */
+    margin: 0.5vw 1.5vw 0.5vw 0vw;
+    cursor: pointer;
+    background-image: url('../IMG/ShowBox/Update.png');
+    background-size: contain;
+    width: 7.7vw;
+    height: 2.5vw;
+    background-repeat: no-repeat;
+}
+
+.abandoned {
+    /*切換廢棄與閒置狀態時廢棄欄位的顯示*/
+    display: none;
+}
+
+.showContent {
+    /*在選擇框的最右側中間顯示小箭頭圖片*/
+    /* background: url("../IMG/ShowSupplier/chevron-down.png") no-repeat scroll right center transparent; */
+    /*為下拉小箭頭留出一點位置，避免被文字覆蓋*/
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    /* 長度跟隨內容大小 */
+}
+
+.selectform,
+.selecttype {
+    /*Chrome和Firefox裡面的邊框是不一樣的，所以複寫了一下*/
+    /* border: solid 1px #000; */
+
+    /*很關鍵：將預設的select選擇框樣式清除*/
+    /**Larry */
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    color: #616893;
+    font-size: 1vw;
+    font-weight: 600;
+    text-align: left;
+    /* border: none; */
+    outline: none;
+    position: absolute;
+    display: none;
+    overflow-y: auto;
+}
+
+.selecttype {
+    position: relative;
+    display: table-cell;
+    border: none;
+    background-color: transparent;
+    /*在選擇框的最右側中間顯示小箭頭圖片*/
+    background: url("../IMG/ShowSupplier/chevron-down.png") no-repeat scroll right center transparent;
+    /*為下拉小箭頭留出一點位置，避免被文字覆蓋*/
+    padding-right: 2vw;
+    cursor: pointer;
+    background-size: 1vw;
+}
+
+/*清除ie的預設選擇框樣式清除，隱藏下拉箭頭*/
+/**確認生效了！！！*/
+.selectform::-ms-expand {
+    display: none;
+}
+
+.selectform option:hover {
+    background-color: rgb(4 151 243);
+    color: white;
+}
+
+.selectform {
+    max-width: 22vw;
+}
+
+.selectform::-webkit-scrollbar {
+    /* 更改滾動條粗細 */
+    height: 0.4vw;
+    width: 0.4vw;
+}
+
+.selectform::-webkit-scrollbar-thumb {
+    /* 更改滾動條顏色 */
+    border-radius: 40vw;
+    background-color: #959292;
+}
+
+/* 篩選排序按鈕樣式 */
+.sortfilter {
+    position: relative;
+    color: #8B83BA;
+    width: fit-content;
+    border: #8B83BA 2px solid;
+    border-radius: 0.5vw;
+    padding: 0.1vw 0.7vw 0.1vw 0.7vw;
+    margin: 0.8vw 1vw 0.8vw 0vw;
+    cursor: pointer;
+}
+
+
+/* 換頁設定 */
+.page {
+    display: flex;
+    float: right;
+    padding: 0.5vw 4vw 0.5vw 2vw;
+    width: 10vw;
+}
+
+.page_button {
+    background: transparent;
+    /* 設定背景為透明 */
+    color: #6E6893;
+    font-size: 1.5vw;
+    border: none;
+    margin: 0vw 2vw 0vw 2vw;
+    cursor: pointer;
+}
+
+.page_nuber {
+    /* 顯示?筆 */
+    font-size: 1.5vw;
+    color: #6E6893;
+    font-weight: bolder;
+}
+
+/* 上傳設定 */
+.post_check {
+    display: none;
+    position: fixed;
+    margin: 0 auto;
+    padding: 1vw 3vw 1vw 3vw;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: black 1px solid;
+    border-radius: 1vw;
+    text-align: center;
+    font-size: 1vw;
+    z-index: 100;
+}
+
+.post_check div button,
+.post_check button {
+    padding: 0.5vw 1vw 0.5vw 1vw;
+    background-color: #333333;
+    color: white;
+    font-size: 1vw;
+    border-radius: 2vw;
+    font-weight: bolder;
+    cursor: pointer;
+    border: none;
+}
+
+/* 篩選設定 */
+.checked_head {
+    accent-color: #17A2B8;
+    padding-left: 0.5vw;
+    font-size: 1.5vw;
+}
+
+.checked_head input {
+    zoom: 200%;
+}
+
+.select_Filter_Object {
+    /*Chrome和Firefox裡面的邊框是不一樣的，所以複寫了一下*/
+    /* border: solid 1px #000; */
+
+    /*很關鍵：將預設的select選擇框樣式清除*/
+    /**Larry */
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    padding: 0.5vw 2vw 0.5vw 2vw;
+    margin-right: 1vw;
+    font-size: 1.3vw;
+    border-radius: 0.5vw;
+    /*在選擇框的最右側中間顯示小箭頭圖片*/
+    background: url("../IMG/ShowPowder/Vector1.png") 93% 50% no-repeat scroll transparent;
+    /*為下拉小箭頭留出一點位置，避免被文字覆蓋*/
+    padding-right: 2vw;
+    background-size: 0.7vw;
+
+    -webkit-box-shadow: 2px 2px 3px 0px rgb(0 0 0 / 26%);
+    -moz-box-shadow: 2px 2px 3px 0px rgb(0 0 0 / 26%);
+    box-shadow: 2px 2px 3px 0px rgb(0 0 0 / 26%);
+}
+
+.select_Filter_Number {
+    position: relative;
+    font-size: 1vw;
+    border-radius: 0.3vw;
+    outline: none;
+}
+
+.select_Filter_Number::before {
+    position: fixed;
+    content: "123";
+    transform: translate(0vw, 10vw);
+}
+
+.filter_button {
+    padding: 0.5vw 2vw 0.5vw 2vw;
+    background-color: #E0E0E0;
+    color: #A69E9E;
+    font-size: 1.5vw;
+    border-radius: 0.8vw;
+    font-weight: bolder;
+    cursor: pointer;
+    border: none;
+    margin-left: 1vw;
+}
+
+.resort_filter {
+    display: flex;
+}
+
+.resort_filter div {
+    margin: auto 0% auto 3%;
+    font-size: 2.2vw;
+    background-color: #17A2B8;
+    color: white;
+    border-radius: 50%;
+    width: 2.5vw;
+    height: 2.5vw;
+    cursor: pointer;
+}
+
+
+/* 排序設定 */
+.sort_check {
+    display: none;
+    position: fixed;
+    transform: translate(0vw, 3.5vw);
+    padding: 0.5vw 1vw 0.5vw 1vw;
+    background-color: white;
+    border-radius: 0.5vw;
+    text-align: center;
+    font-size: 1vw;
+    z-index: 100;
+    line-height: 2vw;
+}
+
+.sort_check p {
+    margin: 0vw;
+    color: #6E6893;
+    font-size: 1vw;
+    vertical-align: middle;
+    text-align: left;
+}
+
+.sort_check div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 10vw;
+    padding: 0vw 0.5vw 0vw 0.5vw;
+
+}
+
+.sort_check div:hover {
+    background-color: #F2F0F9;
+    border-radius: 0.3vw;
+}
+
+.sort_check input:checked {
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    width: 1vw;
+    height: 1vw;
+    margin: 0vw;
+    border: #6D5BD0 6px solid;
+    border-radius: 50vw;
+    background-color: white;
+    cursor: pointer;
+}
+
+.sort_check input {
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    width: 1vw;
+    height: 1vw;
+    margin: 0vw;
+    border: #6D5BD0 1px solid;
+    border-radius: 50vw;
+    background-color: white;
+    cursor: pointer;
+}
+
+@media print {
+
+    /* 列印設定 */
+    * {
+        -webkit-print-color-adjust: exact !important;
+        /* 顏色正常顯示 */
+        font-size: 1vw;
+        margin: 0;
+    }
+
+    .noBreak {
+        break-inside: avoid;
+        /* 不會被分頁切割 */
+    }
+
+    .noPrint {
+        display: none;
+        /* 不想印出 Pagination */
+    }
+
+    /* 這邊設定要讓哪些列印出來 */
+    .nav {
+        display: none;
+    }
+
+    .clearfix {
+        display: none;
+    }
+
+    .Menu_Home {
+        display: none;
+    }
+
+    .printbox {
+        display: none;
+    }
+
+    .nullbox {
+        display: none;
+    }
+
+    .checkbox {
+        display: none;
+    }
+
+    .seart1 {
+        border: none;
+        width: 100%;
+        left: 0%;
+        top: 0%;
+        padding: 0;
+    }
+
+    .page {
+        display: none;
+    }
+
+    #Boxhead {
+        padding: 1vw;
+        width: 15%;
+    }
+
+    .selecttype {
+        font-size: 0.5vw;
+        background: none;
+    }
+
+    .showContent img {
+        display: none;
+    }
+
+    .tablelist {
+        width: 100%;
+    }
+
+}
+
+@page {
+    size: A4 portrait;
+    /* 直向列印 ，Landscape 橫向列印*/
+}
+
+.bg_light {
+    /* 背景變暗 */
+    display: none;
+    position: fixed;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.274);
+    z-index: 50;
+}

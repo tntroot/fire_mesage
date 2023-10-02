@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script>
+        //菜單載入
+        $(document).ready(function () {
+            $('#left').load('Menu.html',function(){
+                MenuNumber(9);
+            });
+        });
+    </script>
+    <link rel="shortcut icon" type="image/x-icon" href="../IMG/Home/icon/logo256.ico" />
+    <link href="../CSS/Home.css" rel="stylesheet" type="text/css"/>
+    <link href="../CSS/MesageFire.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    <script src="../JS/functions.js"></script>
+    <style>
+        .post_supplier,.post_check,.insert_supplier_button,.post_supplier_button{
+            border: none;
+        }
+        .page_nuber{
+            font-weight: normal;
+        }
+    </style>
+    <title>管理滅火器！</title>
+</head>
+<body  class="Home_BG" onload="showFire4('','','0');All_SupplierName()">
+    <!-- 背景變暗 -->
+    <div id="bg_light" class="bg_light" tabindex="-1" onclick="die()"></div>
+
+    <!-- 菜單 -->
+    <div id="left"></div>
+    
+    <!-- 內容 -->
+    <div class="seart1">
+        <table class="tablelist" style="border: 0.15vw #f4f2ff solid;border: 1;" rules="rows">
+            <thead>
+                <tr class="printbox">
+                    <th colspan="7">
+                        <button class="insertScreen" onclick="insert_correct('in')">新增</button>
+                        <button class="insertScreen" style="background-color: #D34949;" onclick="insert_correct('out')">廢棄</button>
+                    </th>
+                </tr>                
+                <tr class="trtitle">
+                    <th width="5%" class="checkbox"><input type="checkbox" name="checkItems" id="checkItems" onclick="AllChecked()"></th>
+                    <th width="5%" class="checkbox">&nbsp;</th>
+                    <th width="15%" style="padding-left: 1vw;">滅火器序號</th>
+                    <th width="15%">
+                        <select select id="selecttype" class="selecttype" onchange="Selectform('0')">
+                            <option value="">類型</option>
+                            <option value="乾粉">乾粉</option>
+                            <option value="強化液">強化液</option>
+                            <option value="二氧化碳">二氧化碳</option>
+                            <option value="泡沫">泡沫</option>
+                            <option value="金屬火災">金屬火災</option>
+                        </select>
+                    </th>
+                    <th width="35%">
+                        <div id="showContent" class="showContent">
+                            <div id="showContent1" title="" style="vertical-align: middle;" >滅火器廠商</div> &ensp;&ensp;<img src="../IMG/ShowSupplier/chevron-down.png" width="18vw" height="10vw">
+                        </div>
+                        <select class="selectform" id="selectform"></select>
+                    </th>
+                    <th width="10%">製造日期</th>
+                    <th>藥粉到期日</th>
+                </tr>
+            </thead>
+            <tbody class="buildinglist" id="list">
+            
+            </tbody>
+            <tr style="background-color: #F4F2FF;">
+                <td colspan="7">
+                    <div class="page">
+                        <button class="page_button" onclick="PageOn1(1)"><</button>
+                        <span id="page_nuber" class="page_nuber"></span>
+                        <button class="page_button" onclick="PageOn2(1)">></button> 
+                    </div>
+                    &nbsp;
+                </td>
+            </tr>
+            <tfoot id="print_click" class="buildinglist" style="display: none;">
+                
+            </tfoot>
+        </table>
+    </div>
+
+    <!-- 修改滅火器 -->
+    <div id="post_supplier" class="post_supplier" tabindex="-1" data-firenum="">
+        <h1 style="text-align: center;font-size: 2vw;">修改滅火器</h1>
+        <p style="margin-bottom: 1vw;">
+            <span>滅火器類型：&nbsp;&nbsp;</span>
+            <select id="FireType_post" class="SupplierType" style="padding: 0.1vw 0.5vw 0.1vw 0.5vw;">
+                <option value="乾粉">乾粉</option>
+                <option value="強化液">強化液</option>
+                <option value="二氧化碳">二氧化碳</option>
+                <option value="泡沫">泡沫</option>
+                <option value="金屬火災">金屬火災</option>
+            </select>
+        </p>
+        <div style="margin-bottom: 1vw;display: flex;">
+            <span>滅火器廠商：&nbsp;&nbsp;</span>
+            <div>
+                <div style="display: flex;flex-direction: column;position: absolute;">
+                    <input id="SupplierName2" type="button" class="SupplierType SupplierType_name" value="請選擇廠商" onclick="SupplierName_size(0,'post')">
+                    <select id="SupplierName3" class="SupplierType" style="display: none;background-color: white;" size="5" onchange="SupplierName_size(1,'post')" onblur="this.style.display='none'"></select>
+                </div>
+            </div>
+        </div>
+        <p style="margin-bottom: 1vw;">
+            <span>製造日期：</span> <!-- 2 -->
+            <input id="FireMFG_post" class="post_supplierbox" style="width: 12vw;" type="date">
+        </p>
+        <p style="margin-bottom: 1.5vw;">
+            <span >藥粉到期日：</span> <!-- 3 -->
+            <input id="FirePowerDate_post" class="post_supplierbox" style="width: 12vw;" type="date">
+        </p>
+        <p style="display: flex;justify-content: space-evenly;">
+            <button class="post_supplier_button" style="background-color: #908888;" onclick="die()">取消</button>
+            <button class="post_supplier_button" onclick="post_looding()">修改</button>
+        </p>
+    </div>
+
+    <!-- 新增滅火器 -->
+    <div class="post_supplier" tabindex="-1">
+        <h1 style="text-align: center;font-size: 2vw;">新增滅火器</h1>
+        <p style="margin-bottom: 1vw;">
+            <span>滅火器類型：&nbsp;&nbsp;</span>
+            <select id="FireType_insert" class="SupplierType" style="padding: 0.1vw 0.5vw 0.1vw 0.5vw;">
+                <option value="乾粉">乾粉</option>
+                <option value="強化液">強化液</option>
+                <option value="二氧化碳">二氧化碳</option>
+                <option value="泡沫">泡沫</option>
+                <option value="金屬火災">金屬火災</option>
+            </select>
+        </p>
+        <div style="margin-bottom: 1vw;display: flex;">
+            <span>滅火器廠商：&nbsp;&nbsp;</span>
+            <div>
+                <div style="display: flex;flex-direction: column;position: absolute;">
+                    <input id="SupplierName0" type="button" class="SupplierType SupplierType_name" value="請選擇廠商" onclick="SupplierName_size(0,'insert')">
+                    <select id="SupplierName" class="SupplierType" style="display: none;background-color: white;" size="5" onchange="SupplierName_size(1,'insert')" onblur="this.style.display='none'"></select>
+                </div>
+            </div>
+        </div>
+        <div style="margin-bottom: 1vw;display: flex;">
+            <span>數量：&nbsp;&nbsp;</span>
+            <div style="display: flex;align-items: center;">
+                <button class="FireNumber" onclick="FireNumber_count(0)">-</button>
+                <span id="FireNumber_s" style="padding: 0vw 1vw 0vw 1vw;" title="按兩下即可編輯">1</span>
+                <button class="FireNumber" onclick="FireNumber_count(1)">+</button>
+            </div>
+        </div>
+        <p style="margin-bottom: 1vw;">
+            <span>製造日期：</span> <!-- 2 -->
+            <input id="FireMFG_insert" class="post_supplierbox" style="width: 12vw;" type="date">
+        </p>
+        <p style="margin-bottom: 1.5vw;">
+            <span >藥粉到期日：</span> <!-- 3 -->
+            <input id="FirePowerDate_insert" class="post_supplierbox" style="width: 12vw;" type="date">
+        </p>
+        <p style="display: flex;justify-content: space-evenly;">
+            <button class="post_supplier_button" style="background-color: #908888;" onclick="die()">取消</button>
+            <button class="post_supplier_button" onclick="insert_check()">新增</button>
+        </p>
+    </div>
+
+    <!-- 確認新增滅火器 -->
+    <div class="post_supplier" tabindex="-1">
+        <h2 style="text-align: center;font-size: 2vw;margin-bottom: 0vw;">確定要新增以下資訊嗎？</h2>
+        <div style="width: 35vw;display: flex;justify-content: space-evenly;align-items: center;">
+            <div class="click_insert">
+                <p>類型：</p>
+                <p>廠商：</p>
+                <p>數量：</p>
+                <p>製造日：</p>
+                <p>藥粉到期日：</p>
+            </div>
+            <img width="175vw" height="175vw" style="margin-left:2vw;" src="../IMG/Home/Rectangle_90.png">
+        </div>
+        <p style="display: flex;justify-content: space-evenly;">
+            <button class="insert_supplier_button" style="background-color: #908888;" onclick="die()">否</button>
+            <button class="insert_supplier_button" onclick="insert_looding()">是</button>
+        </p>
+    </div>
+
+    <!-- 報廢滅火器 -->
+    <div class="post_supplier" tabindex="-1">
+        <h2 style="text-align: center;font-size: 1.5vw;margin-bottom: 2vw;">確定要廢棄嗎？</h2>
+        <p style="display: flex;justify-content: space-around;width: 20vw;">
+            <button class="insert_supplier_button" style="background-color: #908888;" onclick="die()">否</button>
+            <button class="insert_supplier_button" onclick="Scrapped_looding()">是</button>
+        </p>
+    </div>
+
+    <!-- 判定是否修改或新增或報廢成功 -->
+    <div id="post_check" tabindex="-1" class="post_check" style="word-break: break-word;">
+        
+    </div>
+
+    <script>
+        let showContent = document.getElementById('showContent');
+        let selContent = document.getElementById('selectform');
+        showContent.onclick = function(e){
+            selContent.style.display = 'block';
+            if(selContent.options.length>5){selContent.size=5}
+            else{selContent.size=selContent.options.length}
+            selContent.focus();
+        }
+        selContent.onblur = function(e){
+            selContent.style.display = 'none';
+        }
+        
+        selContent.onchange = function(e){
+            var option = this.options[this.selectedIndex];
+            if(option.value==""){
+                showContent.children[0].innerText =option.title;
+                showContent.children[0].title ="";
+            }else{
+                showContent.children[0].innerHTML =option.text; 
+                showContent.children[0].title =option.value;  
+            }
+            selContent.style.display = 'none';
+            Page="1";
+            //localStorage.clear();
+            Selectform("0");    
+        }
+    </script>
+    <script>
+        let Page="1", // 當前頁數 
+            dataLen, // 顯示資料長度
+            dataLen_Max=0, // 顯示資料總數
+            endPage, //取得總比數
+            valueOn1="", //取得類型篩選資料
+            valueOn2="", //取得廠商篩選資料
+            x=0,y=0; // 處理下拉式資料，避免重複新增
+            pandas=[];// 將所有資料放在這
+        localStorage.clear(); //清空儲存資料
+                  
+        var page_button=document.getElementsByClassName("page_button"),
+            page_nuber=document.getElementsByClassName("page_nuber");
+        
+        //從API獲得滅火器資訊
+        function showFire4(getType,getSupplier,Page){
+            fetch(DataAPI+'showFire4.php?Type='+ getType + '&Supplier=' + getSupplier + '&Page=' + Page)
+            .then( response => response.json() )
+            .then( data => {
+
+                var el = document.getElementById("list");
+                if(data["status"]=="fail"){
+                    el.innerHTML="<td colspan='5' style='padding-left:5vw'>"+errordata[data["data"]]+"</td>";
+                    console.log(errordata[data["data"]]);
+                }else{
+                    console.log(data);
+                    dataLen = data["data"].length; //資料長度
+                    var str = ""; //建立一個空字串，要將資料填入的
+                    var page_nuber=document.getElementById("page_nuber");
+
+                    if(Page=="0"){
+                        var selectform=document.getElementById("selectform");
+                        var select_location=["全部廠商"],
+                            select_location1; // 去除重複元素用
+                        dataLen_Max=dataLen;
+                        Page="1";
+                        endPage=Math.ceil(dataLen_Max/10); //無條件進位                    
+                        pandas=[];
+                        
+                        for (var i = 0; i < dataLen_Max; i++) {
+                            pandas[pandas.length]=["checked",true,"",data["data"][i].Num,data["data"][i].Type,data["data"][i].Supplier,data["data"][i].MFG,data["data"][i].PowderEXP];
+                        }
+
+                        if(x==0){
+                            $("#selectform").empty(); // 清除下拉式選單中所有的資料   
+                            for (var i=0; i<dataLen_Max; i++){ // 將 Building 欄位所有資料存在陣列，
+                                select_location[select_location.length]=data["data"][i].Supplier;
+                            };
+                            select_location1=[...new Set(select_location)]; // 去除重複元素
+                            for (var i=0; i<select_location1.length;i++){ // 將陣列中的元素加在下拉式選單裡
+                                if(i==0){
+                                    selectform.add(new Option(select_location1[i],""));
+                                    selectform.options[0].title='滅火器廠商';
+                                }else{
+                                    selectform.add(new Option(select_location1[i],select_location1[i]));
+                                }
+                            };
+                            x=x+1; 
+                        };
+                        showFire4(valueOn2,valueOn1,'1');
+                    }else{
+                       // for 迴圈
+                        for (var i = 0; i < dataLen; i++) {
+                            var content = "<tr class='checked nullbox'>" + "<td class='checkbox'><input id='"+data["data"][i].Num+"' type='checkbox' name='items' onclick='Savecheckbox(this);'></td>" +
+                                "<td class='checkbox'><img width='20vw' style='cursor: pointer;min-width:1vw;' src='../IMG/MesageSupplier/Edit.png' onclick='post_supplierall(this);'></td>" + 
+                                "<td style='padding-left: 1vw;'>" + data["data"][i].Num +"</td>" + 
+                                "<td>" + data["data"][i].Type +"</td>" + 
+                                "<td style='padding-right:2vw;'>" + data["data"][i].Supplier + "</td>"+
+                                "<td>"+ data["data"][i].MFG + "</td>" + 
+                                "<td>"+ data["data"][i].PowderEXP + "</td>" +"</tr>"; //組字串
+                            str += content; // 透過加總把 變數 content 的內容回傳到 str 中
+                        }
+                        el.innerHTML = str;
+                        //透過 el 選取到的 list，透過 innerHTML 的方式，把 str 裡的資料渲染到網頁上
+                        page_nuber.innerHTML=Page; // 顯示頁數
+                        PageNumber(); 
+                        Importcheckbox();                                             
+                    }        
+                }
+            });
+        }
+
+        //全選/不選 列印設定
+		function AllChecked(){            
+            var checkItems1=document.getElementById("checkItems");
+            if(checkItems1.checked==true){
+                var checkElements=document.getElementsByName('items');
+                var checkprints=document.getElementsByClassName('checked');
+
+                for(let i=0;i<pandas.length;i++){
+                    localStorage.setItem(pandas[i][3],JSON.stringify(pandas[i])); 
+                }
+
+		        for(var i=0;i<checkElements.length;i++){
+			        var checkElement=checkElements[i];
+                    var checkprint = checkprints[i];
+                    //var index_pa=checkElement.parentNode.nextSibling.nextSibling;
+                    // 方法一
+                    // checkElement.setAttribute('checked',' checked');
+                    // 方法二
+			        checkElement.checked="checked";
+                    checkprint.classList.remove("nullbox");                 
+                }
+            }else{
+                var checkElements=document.getElementsByName('items');
+                var checkprints=document.getElementsByClassName('checked');
+			    for(var i=0;i<checkElements.length;i++){
+                    var checkElement=checkElements[i];
+                    var checkprint = checkprints[i];
+                    // 方法二 火狐和ie都支援
+                    checkElement.checked=null;
+                    checkprint.classList.add("nullbox");
+                }
+                localStorage.clear();
+            }            
+        };
+        
+        //將複選框存起來
+        function Savecheckbox(index){ 
+            let  checkElements=document.querySelectorAll('input[name=items]');
+            let index_pa_pa=index.parentNode.parentNode;
+            
+            var checkboxsave=["checked",index.checked];
+
+            for(let i=1;i<index_pa_pa.children.length;i++){
+                checkboxsave[i+1]=index_pa_pa.children[i].innerText;
+            }
+
+            if(checkboxsave[1]==true){
+                localStorage.setItem(index.id,JSON.stringify(checkboxsave));
+            }else{
+                localStorage.removeItem(index.id);
+            }                      
+        };
+
+        // 將儲存的複選框在網頁顯示
+        function Importcheckbox(){
+            let  checkElements=document.querySelectorAll('input[name=items]');
+            for (let checkbox1 of checkElements) {
+                var checkedkeyValue=JSON.parse(localStorage.getItem(checkbox1.id));
+                if(checkedkeyValue==null){
+                    continue;
+                }
+                document.getElementById(checkbox1.id).checked=checkedkeyValue[1];
+                document.getElementById(checkbox1.id).parentNode.parentNode.className=checkedkeyValue[0];
+            };
+            /* var checkedkeyValueAll=JSON.parse(localStorage.getItem("AllClick "+Page));
+            document.getElementById("checkItems").checked=checkedkeyValueAll; */
+        }
+
+        //篩選器
+        function Selectform(Page1){
+            var value1 = document.getElementById('showContent1').title;
+            var value2 = document.getElementById('selecttype').title;
+            value2=document.getElementById('selecttype').options[document.getElementById('selecttype').selectedIndex].value;
+
+            valueOn1=value1;
+            valueOn2=value2;
+              
+            showFire4(value2,value1,Page1); 
+        }
+
+    </script>
+
+    <script>
+        var bg_light=document.getElementById("bg_light");
+
+        //修改滅火器介面
+        function post_supplierall(index){
+            var post_supplier=document.getElementById("post_supplier");
+            post_supplier.style.display="block";
+            bg_light.style.display="block";
+            post_supplier.dataset.firenum=index.parentNode.nextSibling.innerText;
+
+            var FireType_post=document.getElementById('FireType_post');
+            var SupplierName2=document.getElementById('SupplierName2');
+            var SupplierName3=document.getElementById('SupplierName3');
+            var FireMFG_post=document.getElementById('FireMFG_post');
+            var FirePowerDate_post=document.getElementById('FirePowerDate_post');
+            FireType_post.value=index.parentNode.nextSibling.nextSibling.innerText;
+            SupplierName2.value=index.parentNode.nextSibling.nextSibling.nextSibling.innerText;
+            SupplierName2.dataset.firename=index.parentNode.nextSibling.nextSibling.nextSibling.innerText;
+            SupplierName3.value=index.parentNode.nextSibling.nextSibling.nextSibling.innerText;
+            FireMFG_post.value=index.parentNode.nextSibling.nextSibling.nextSibling.nextSibling.innerText;
+            FirePowerDate_post.value=index.parentNode.nextSibling.nextSibling.nextSibling.nextSibling.nextSibling.innerText;
+        }
+
+        //檢查是否修改成功
+        function post_looding(){
+            var post_check=document.getElementById('post_check');
+            var post_supplier=document.getElementById("post_supplier");
+
+            var FireNum_post=document.getElementById('post_supplier').dataset.firenum;
+            var FireType_post=document.getElementById("FireType_post");
+            var SupplierName3=document.getElementById("SupplierName3");
+            var FireMFG_post=document.getElementById('FireMFG_post');
+            var FirePowerDate_post=document.getElementById("FirePowerDate_post");
+            
+            if(FireMFG_post.value==""){
+                alert("尚未輸入製造日期");
+            }else if(FirePowerDate_post.value==""){
+                alert("尚未輸入藥粉到期日");
+            }else{
+                fetch(DataAPI+'correctFire.php',{
+                    method:"POST", 
+                    mode: "no-cors", //需添加這段才能發送請求
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-Type': "application/x-www-form-urlencoded"
+                    },
+                    // 原本是 JSON 檔，需轉成 formdate 後台才接的到參數，jquery 會自動幫你轉
+                    body:"Num="+FireNum_post+
+                        "&Type="+FireType_post.value+
+                        "&Supplier="+SupplierName3.value+
+                        "&MFG="+FireMFG_post.value+
+                        "&PowderEXP="+FirePowerDate_post.value
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    post_check.style.display='block';
+                    if(data["status"]=="fail"){
+                        post_supplier.style.display="none";
+                        post_check.innerHTML='<h2>'+'修改失敗'+'</h2>'+
+                            "<h2>"+errordata[data["data"]]+"</h2>"+
+                            "<button style='background-color: #333333;' onclick='location.href=&apos;&apos;'>"+"確定"+"</button>";
+                        post_check.style.padding="1vw 5vw 1vw 5vw";    
+                    }else{
+                        post_supplier.style.display="none";
+                        post_check.innerHTML='<h2>'+'修改成功'+'</h2>'+"<img src='../IMG/ShowBox/Update_yes.png' width='75vw'>"; 
+                        post_check.style.padding="1vw 5vw 1vw 5vw";
+                        setTimeout("location.href=''",3000); //三秒之後跳轉頁面
+                    }
+                }); 
+            }
+        }
+        //新增或廢棄滅火器
+        function insert_correct(in_co){
+            var post_supplier=document.getElementsByClassName('post_supplier');
+            if(in_co=="in"){
+                post_supplier[1].style.display='block';
+                bg_light.style.display='block'; 
+            }else{
+                if(localStorage.length==0){
+                    alert("尚未勾選要廢棄的滅火器");
+                }else{
+                    post_supplier[3].style.display='block';
+                    bg_light.style.display='block'; 
+                }               
+            }              
+        }
+        //滅火器廠商下拉式選單處理
+        function SupplierName_size(number,status){
+            var SupplierName0 = document.getElementById('SupplierName0');
+            var SupplierName = document.getElementById('SupplierName');
+            var SupplierName2 = document.getElementById('SupplierName2');
+            var SupplierName3 = document.getElementById('SupplierName3');
+            if(status=='insert'){
+                if(number==0){
+                    SupplierName.style.display='block';
+                    SupplierName.focus();
+                    if(SupplierName.length<5){
+                        SupplierName.size=SupplierName.length;
+                    }else{
+                        SupplierName.size="5";
+                    }
+                }else{
+                    var option = SupplierName.options[SupplierName.selectedIndex].value;
+                    SupplierName0.value=option;
+                    SupplierName0.dataset.firename=option;
+                    SupplierName.style.display='none';
+                }
+            }else{
+                if(number==0){
+                    SupplierName3.style.display='block';
+                    SupplierName3.focus();
+                    if(SupplierName3.length<5){
+                        SupplierName3.size=SupplierName3.length;
+                    }else{
+                        SupplierName3.size="5";
+                    }
+                }else{
+                    var option = SupplierName3.options[SupplierName3.selectedIndex].value;
+                    SupplierName2.value=option;
+                    SupplierName2.dataset.firename=option;
+                    SupplierName3.style.display='none';
+                }
+            }
+            
+        }
+        // 新增滅火器數量
+        function FireNumber_count(number){
+            var FireNumber_s=document.getElementById('FireNumber_s');
+            if(number==0){
+                if(FireNumber_s.innerText!=1){
+                    FireNumber_s.innerText=FireNumber_s.innerText-1;
+                }
+            }else{
+                if(FireNumber_s.innerText<100){
+                    FireNumber_s.innerText=parseInt(FireNumber_s.innerText)+1;
+                }
+            }
+        }
+        let two_click=1;
+        //按兩下編輯
+        document.querySelectorAll('#FireNumber_s').forEach(function(node){
+            node.ondblclick=function(){
+                if(two_click==1){
+                    var val=this.innerHTML;
+                    var input=document.createElement("input");
+                    input.value=val;
+                    input.oninput=function(){
+                        this.value=this.value.replace(/[^\d]/g,'')
+                    };
+                    input.onblur=function(){
+                        var val=this.value;
+                        if(parseInt(val)<1 || val==''){
+                            this.parentNode.innerHTML=1;
+                        }else if(parseInt(val)>=100){
+                            this.parentNode.innerHTML=100;
+                        }else{
+                            this.parentNode.innerHTML=parseInt(val); 
+                        }
+                        two_click=1;
+                    }
+                    this.innerHTML="";
+                    this.appendChild(input);
+                    input.focus();
+                    input.style="width: 5vw;padding:0.3vw;font-size:1vw;";
+                    two_click=2;
+                }
+            }
+        });
+
+        //確認新增
+        function insert_check(){
+            var FireType_insert=document.getElementById("FireType_insert");
+            var SupplierName=document.getElementById("SupplierName");
+            var FireNumber_s=document.getElementById("FireNumber_s");
+            var FireMFG_insert=document.getElementById("FireMFG_insert");
+            var FirePowerDate_insert=document.getElementById("FirePowerDate_insert");
+            
+            if(SupplierName.value==""){alert("廠商尚未選擇");}
+            else if(FireMFG_insert.value==""){alert("尚未輸入製造日期");}
+            else if(FirePowerDate_insert.value==""){alert("尚未輸入藥粉到期日");}
+            else{
+                var post_supplier=document.getElementsByClassName('post_supplier')[2];
+                var click_insert=document.getElementsByClassName('click_insert');
+                post_supplier.style.display='block';
+                click_insert[0].innerHTML="<p>"+"類型："+FireType_insert.value+"</p>"+
+                    "<p>"+"廠商："+SupplierName.value+"</p>"+
+                    "<p>"+"數量："+FireNumber_s.innerText+ "  支" +"</p>"+
+                    "<p>"+"製造日："+FireMFG_insert.value+"</p>"+
+                    "<p>"+"藥粉到期日："+FirePowerDate_insert.value+"</p>";
+            }
+        }
+        //檢查是否新增成功
+        function insert_looding(){
+            var post_check=document.getElementById('post_check');
+            var post_supplier=document.getElementsByClassName('post_supplier');
+            
+            var FireType_insert=document.getElementById("FireType_insert");
+            var SupplierName=document.getElementById("SupplierName");
+            var FireNumber_s=document.getElementById("FireNumber_s");
+            var FireMFG_insert=document.getElementById("FireMFG_insert");
+            var FirePowerDate_insert=document.getElementById("FirePowerDate_insert");
+
+            fetch(DataAPI+'addFire.php',{
+                method:"POST", 
+                mode: "no-cors", //需添加這段才能發送請求
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': "application/x-www-form-urlencoded"
+                },
+                // 原本是 JSON 檔，需轉成 formdate 後台才接的到參數，jquery 會自動幫你轉
+                body:"Type="+FireType_insert.value+
+                    "&MFG="+FireMFG_insert.value+
+                    "&Powder_EXP="+FirePowerDate_insert.value+
+                    "&Supplier="+SupplierName.value+
+                    "&Quantity="+ FireNumber_s.innerText  //100 1~2s,200 3s,300 4~5s,400 5~6s,500 6~7s,1000 14s
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                post_check.style.display='block';
+                if(data["status"]=="fail"){
+                    post_supplier[1].style.display="none";
+                    post_supplier[2].style.display="none";
+                    post_check.innerHTML='<h2>'+'新增失敗'+'</h2>'+
+                        "<h2>"+errordata[data["data"]]+"</h2>"+
+                        "<button class='insert_supplier_button' style='background-color: #333333;' onclick='location.href=&apos;&apos;'>"+"確定"+"</button>";
+                    post_check.style.padding="1vw 5vw 1vw 5vw";    
+                }else{
+                    post_supplier[1].style.display="none";
+                    post_supplier[2].style.display="none";
+                    post_check.innerHTML='<h2>'+'新增成功'+'</h2>'+"<img src='../IMG/ShowBox/Update_yes.png' width='75vw'>"; 
+                    post_check.style.padding="1vw 5vw 1vw 5vw";
+                    setTimeout("location.href=''",3000); //三秒之後跳轉頁面
+                }
+            }); 
+        }
+
+        //檢查是否報廢成功
+        async function Scrapped_looding(){
+            var post_check=document.getElementById('post_check');
+            var post_supplier=document.getElementsByClassName('post_supplier');
+            
+            var update_error=[];
+            var update_yes1=[true,''];
+
+            for(let i=0 ; i<localStorage.length ; i++){
+                var update_dt=JSON.parse(localStorage.getItem(localStorage.key(i)));
+                if(update_dt[1]==null){continue};  // 遇到全選框則跳過
+                await fetch(DataAPI+'ScrappedFire.php',{
+                    method:"POST", 
+                    mode: "no-cors", //需添加這段才能發送請求
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-Type': "application/x-www-form-urlencoded"
+                    },
+                    // 原本是 JSON 檔，需轉成 formdate 後台才接的到參數，jquery 會自動幫你轉
+                    body:"Num="+update_dt[3]
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+
+                    if(data["status"]=="fail"){
+                        update_yes1=[false,errordata[data["data"]]];
+                        update_error[update_error.length]=update_dt[2];    
+                    }
+                }); 
+                
+            };
+            console.log(update_yes1);
+            post_check.style.display='block';
+            post_supplier[3].style.display="none";
+
+            update_error = update_error.join(', ').replace(/(B12)/g, '<span style="white-space:nowrap;">$1</span>');
+            // 使用 join() 方法將 update_error 陣列轉換為字串，並在其中使用 replace() 方法來替換 B12 單詞，將其包裹在 <span> 標籤中，並設置該標籤的 white-space 屬性為 nowrap，以保證單詞不被分割。
+
+            if(update_yes1[0]==true){
+                post_check.innerHTML='<h2>'+'報廢成功'+'</h2>'+"<img src='../IMG/ShowBox/Update_yes.png' width='75vw'>"; 
+                post_check.style.padding="1vw 5vw 1vw 5vw";
+                setTimeout("location.href=''",3000); //三秒之後跳轉頁面
+            }else{
+                post_check.innerHTML='<h2>'+'報廢失敗'+'</h2>'+"<h2>"+update_error+"&nbsp;&nbsp;"+update_yes1[1]+"</h2>"+
+                    "<button style='background-color: #333333;' onclick='location.href=&apos;&apos;'>"+"確定"+"</button>";
+                post_check.style.padding="1vw 5vw 1vw 5vw";
+            }
+        }
+
+        function die(){
+            var post_supplier=document.getElementsByClassName("post_supplier");
+            if(post_supplier[2].style.display=="block"){
+                post_supplier[2].style.display="none";
+            }else{
+                post_supplier[0].style.display="none";
+                post_supplier[1].style.display="none"; 
+                post_supplier[3].style.display="none"; 
+                bg_light.style.display="none"; 
+            } 
+        }       
+    </script>
+    <script>
+        function All_SupplierName(){
+            //從API獲得廠商資訊
+            fetch(DataAPI+'showSupplier.php?Type='+ '' + '&Page=' + '0')
+            .then( response => response.json() )
+            .then( data => {
+
+                var SupplierName=document.getElementById("SupplierName");
+                var SupplierName3=document.getElementById("SupplierName3");
+                if(data["status"]=="fail"){
+                    SupplierName.add(new Option(errordata[data["data"]],errordata[data["data"]]));
+                    SupplierName3.add(new Option(errordata[data["data"]],errordata[data["data"]]));
+                    console.log(errordata[data["data"]]);
+                }else{
+                    console.log(data);
+                    dataLen = data["data"].length; //資料長度
+
+                    var select_location=[],
+                        select_location1; // 去除重複元素用
+                    dataLen_Max=dataLen;                   
+                    console.log(dataLen_Max);
+                   // $("#SupplierName").empty(); // 清除下拉式選單中所有的資料   
+                    for (var i=0; i<dataLen_Max; i++){ // 將 Building 欄位所有資料存在陣列，
+                        select_location[select_location.length]=data["data"][i].NAME;
+                    };
+                    select_location1=[...new Set(select_location)]; // 去除重複元素
+                    for (var i=0; i<select_location1.length;i++){ // 將陣列中的元素加在下拉式選單裡
+                        SupplierName.add(new Option(select_location1[i],select_location1[i]));
+                        SupplierName3.add(new Option(select_location1[i],select_location1[i]));                        
+                    };                     
+                }
+            });
+        }
+    </script>
+</body>
+</html>

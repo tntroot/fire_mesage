@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script>
+        //菜單載入
+        $(document).ready(function () {
+            $('#left').load('Menu.html',function(){
+                MenuNumber(5);
+            });
+        });
+    </script>
+    <link rel="shortcut icon" type="image/x-icon" href="../IMG/Home/icon/logo256.ico" />
+    <link href="../CSS/Home.css" rel="stylesheet" type="text/css"/>
+    <link href="../CSS/SelectSupplier.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    <script src="../JS/functions.js"></script>
+    <style>
+        .page_nuber{
+            font-weight: normal;
+        }
+    </style>
+    <title>查詢廠商資訊！</title>
+</head>
+<body  class="Home_BG" onload="showSupplier('','0')">
+    <!-- 背景變暗 -->
+    <div id="bg_light" class="bg_light" tabindex="-1" onclick="die()"></div>
+
+    <!-- 菜單 -->
+    <div id="left"></div>
+    
+    <!-- 內容 -->
+    <div class="seart1">
+        <table class="tablelist" style="border: 0.15vw #f4f2ff solid;border: 1;" rules="rows">
+            <thead>
+                <tr class="printbox">
+                    <td colspan="4">
+                        <span>
+                            <span id="print" class="print" onclick="printData();"></span>
+                        </span>
+                    </td> 
+                </tr>                
+                <tr class="trtitle">
+                    <th width="10%" class="checkbox"><input type="checkbox" name="checkItems" id="checkItems" onclick="AllChecked()"></th>
+                    <th width="15%" id="Boxhead">
+                        <select class="selectform" id="selectform" onchange="Selectform('0')">
+                            <option value="">類型</option>
+                            <option value="瓶子廠商">瓶子廠商</option>
+                            <option value="藥粉廠商">藥粉廠商</option>
+                        </select>
+                    </th>
+                    <th width="50%" id="Boxhead1">廠商名稱</th>
+                    <th>聯絡電話</th>
+                </tr>
+            </thead>
+            <tbody class="buildinglist" id="list">
+            
+            </tbody>
+            <tr style="background-color: #F4F2FF;">
+                <td colspan="4">
+                    <div class="page">
+                        <button class="page_button" onclick="PageOn1()"><</button>
+                        <span id="page_nuber" class="page_nuber"></span>
+                        <button class="page_button" onclick="PageOn2()">></button> 
+                    </div>
+                    &nbsp;
+                </td>
+            </tr>
+            <tfoot id="print_click" class="buildinglist" style="display: none;">
+                
+            </tfoot>
+        </table>
+    </div>
+
+    <script>
+        let Page="1", // 當前頁數 
+            dataLen, // 顯示資料長度
+            dataLen_Max=0, // 顯示資料總數
+            endPage, //取得總比數
+            valueOn="", //取得篩選資料
+            x=0,y=0, // 處理下拉式資料，避免重複新增
+            pandas=[]; // 將所有資料放在這
+        localStorage.clear(); //清空儲存資料
+                  
+        var page_button=document.getElementsByClassName("page_button"),
+            page_nuber=document.getElementsByClassName("page_nuber");
+        
+        //從API獲得廠商資訊 廠商API
+        function showSupplier(getType,Page){
+            fetch(DataAPI+'showSupplier.php?Type='+ getType + '&' + 'Page=' + Page)
+            .then( response => response.json() )
+            .then( data => {
+
+                var el = document.getElementById("list");
+                if(data["status"]=="fail"){
+                    el.innerHTML="<td colspan='4' style='padding-left:5vw'>"+errordata[data["data"]]+"</td>";
+                    console.log(errordata[data["data"]]);
+                }else{
+                    console.log(data);
+                    dataLen = data["data"].length; //資料長度
+                    var str = ""; //建立一個空字串，要將資料填入的
+                    var page_nuber=document.getElementById("page_nuber");
+
+                    if(Page=="0"){
+                        var selectform=document.getElementById("selectform");
+                        dataLen_Max=dataLen;
+                        Page="1";
+                        endPage=Math.ceil(dataLen_Max/10); //無條件進位                    
+                        pandas=[];
+                        for (var i = 0; i < dataLen_Max; i++) {
+                            pandas[pandas.length]=["checked",true,data["data"][i].ID,data["data"][i].Type,data["data"][i].NAME,data["data"][i].Phone]
+                        } 
+
+                        showSupplier(valueOn,"1"); 
+                    }else{
+                       // for 迴圈
+                        for (var i = 0; i < dataLen; i++) {
+                            var content = "<tr class='checked nullbox'>" +  "<td class='checkbox'><input id='"+data["data"][i].ID+"' type='checkbox' name='items' onclick='Savecheckbox(this);'></td>" + 
+                                "<td id='"+i+"'>" + data["data"][i].Type +"</td>" + 
+                                "<td style='margin-left:2vw;'>" + data["data"][i].NAME + "</td>"+
+                                "<td>"+ data["data"][i].Phone + "</td>" + "</tr>"; //組字串
+                            str += content; // 透過加總把 變數 content 的內容回傳到 str 中
+                        }
+                        el.innerHTML = str;
+                        //透過 el 選取到的 list，透過 innerHTML 的方式，把 str 裡的資料渲染到網頁上
+                        page_nuber.innerHTML=Page; // 顯示頁數
+                        PageNumber(); 
+                        Importcheckbox();
+                        console.log(pandas);                      
+                    }        
+                }
+            });
+        }
+
+        //全選/不選 列印設定
+		function AllChecked(){            
+            var checkItems1=document.getElementById("checkItems");
+            if(checkItems1.checked==true){
+                var checkElements=document.getElementsByName('items');
+                var checkprints=document.getElementsByClassName('checked');
+		        for(let i=0;i<pandas.length;i++){
+                    localStorage.setItem(pandas[i][2],JSON.stringify(pandas[i])); 
+                }
+
+		        for(var i=0;i<checkElements.length;i++){
+			        var checkElement=checkElements[i];
+                    var checkprint = checkprints[i];
+                    var index_pa=checkElement.parentNode.nextSibling;
+                    // 方法一
+                    // checkElement.setAttribute('checked',' checked');
+                    // 方法二
+			        checkElement.checked="checked";
+                    checkprint.classList.remove("nullbox");                                  
+                }
+            }else{
+                var checkElements=document.getElementsByName('items');
+                var checkprints=document.getElementsByClassName('checked');
+			    for(var i=0;i<checkElements.length;i++){
+                    var checkElement=checkElements[i];
+                    var checkprint = checkprints[i];
+                    // 方法二 火狐和ie都支援
+                    checkElement.checked=null;
+                    checkprint.classList.add("nullbox");        
+                
+                    //localStorage.removeItem(checkElement.id);
+                }
+                //localStorage.removeItem("AllClick "+Page);
+                localStorage.clear();
+            }            
+        };
+        
+        //將複選框存起來
+        function Savecheckbox(index){ 
+            let  checkElements=document.querySelectorAll('input[name=items]');
+            let index_pa=index.parentNode.nextSibling;
+            let index_pa_pa=index.parentNode.parentNode;
+            
+            var checkboxsave=["checked",index.checked,index.id];
+
+            for(let i=1;i<index_pa_pa.children.length;i++){
+                checkboxsave[i+2]=index_pa_pa.children[i].innerText;
+            }
+
+            if(checkboxsave[1]==true){
+                localStorage.setItem(index.id,JSON.stringify(checkboxsave));
+            }else{
+                localStorage.removeItem(index.id);
+            }       
+        };
+
+        // 將儲存的複選框在網頁顯示
+        function Importcheckbox(){
+            let  checkElements=document.querySelectorAll('input[name=items]');
+            for (let checkbox1 of checkElements) {
+                var checkedkeyValue=JSON.parse(localStorage.getItem(checkbox1.id));
+                if(checkedkeyValue==null){
+                    continue;
+                }
+                document.getElementById(checkbox1.id).checked=checkedkeyValue[1];
+                document.getElementById(checkbox1.id).parentNode.parentNode.className=checkedkeyValue[0];
+            };
+            /* var checkedkeyValueAll=JSON.parse(localStorage.getItem("AllClick "+Page));
+            document.getElementById("checkItems").checked=checkedkeyValueAll; */
+        }
+
+        //篩選器
+        function Selectform(Page1){
+            var myselect = document.getElementById('selectform');
+            var value = myselect.options[myselect.selectedIndex].value;
+            
+            valueOn=value;                                
+            showSupplier(valueOn,Page1);  
+        };
+        
+    </script>
+    <script>
+        function printData(){ //列印函數
+            var oldstr = document.getElementById("list").innerHTML; //將網頁內容存起來
+            var str1='';
+            var list1=document.getElementById('list');
+            for(let i=0 ; i<localStorage.length ; i++){
+                var print_dt=JSON.parse(localStorage.getItem(localStorage.key(i)));
+                if(print_dt[1]==true){
+                    var content="<tr class='checked'>";
+                        content=content+"<td style='padding: 1vw;'>"+print_dt[3]+"</td>";
+                    for(let ii=4; ii<print_dt.length;ii++){
+                        if(print_dt[ii]==''){continue}
+                        content=content+"<td>"+print_dt[ii]+"</td>";
+                    }
+                    content=content+"</tr>"
+                    str1 +=content;
+                }      
+            }
+            if(str1==''){
+                alert("尚未勾選要列印的項目");
+            }else{
+                list1.innerHTML=str1; //將要列印的資料顯示在網頁上
+                window.print(); //呼叫列印視窗
+                document.getElementById("list").innerHTML=oldstr; //復原原本網頁內容
+
+                // 將儲存的複選框在網頁顯示
+                Importcheckbox();
+            }    
+        }
+    </script>
+</body>
+</html>

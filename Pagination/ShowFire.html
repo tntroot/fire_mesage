@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script>
+        //菜單載入
+        $(document).ready(function () {
+            $('#left').load('Menu.html',function(){
+                MenuNumber(2);
+            });
+        });
+    </script>
+    <link rel="shortcut icon" type="image/x-icon" href="../IMG/Home/icon/logo256.ico" />
+    <link href="../CSS/Home.css" rel="stylesheet" type="text/css"/>
+    <link href="../CSS/SelectFire.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    <script src="../JS/functions.js"></script>
+    <style>
+        .page_nuber{
+            font-weight: normal;
+        }
+        th{
+            white-space: nowrap;
+        }
+    </style>
+    <title>查詢滅火器資訊！</title>
+</head>
+<body  class="Home_BG" onload="showFire1('','','0')">
+    <!-- 背景變暗 -->
+    <div id="bg_light" class="bg_light" tabindex="-1" onclick="die()"></div>
+
+    <!-- 菜單 -->
+    <div id="left"></div>
+    
+    <!-- 內容 -->
+    <div class="seart1">
+        <table class="tablelist" style="border: 0.15vw #f4f2ff solid;border: 1;" rules="rows">
+            <thead>
+                <tr class="printbox">
+                    <td colspan="8">
+                        <div style="display: flex;align-items: center;justify-content: space-between;padding: 0.2vw 1vw 0.2vw 7vw;">
+                            <div class="BoxSwitch">
+                                <input class="BoxSwitchON" type="button" value="閒置" onclick="FireSwitched1(this)">
+                                <input class="BoxSwitchOFF" type="button" value="換藥中" onclick="FireSwitched2(this)">
+                                <input onclick="FireSwitched3(this)" class="BoxSwitchOFF" type="button" value="廢棄" >
+                            </div>
+                            <span id="print" class="print" onclick="printData();"></span>
+                        </div>           
+                    </td> 
+                </tr>                
+                <tr class="trtitle">
+                    <th width="5%" class="checkbox"><input type="checkbox" name="checkItems" id="checkItems" onclick="AllChecked()"></th>
+                    <th id="FireNumber" width="8%">滅火器序號</th>
+                    <th width="10%">
+                        <select id="selecttype" class="selecttype" onchange="Selectform('0')">
+                            <option value="">類型</option>
+                            <option value="乾粉">乾粉</option>
+                            <option value="強化液">強化液</option>
+                            <option value="二氧化碳">二氧化碳</option>
+                            <option value="泡沫">泡沫</option>
+                            <option value="金屬火災">金屬火災</option>
+                        </select>
+                    </th>
+                    <th id="Firedown" width="10%" style="display: none;">滅火器下架時間</th>
+                    <th id="Supplier_Loction" width="30%">
+                        <div id="showContent" class="showContent">
+                            <div id="showContent1" title="" style="vertical-align: middle;" >滅火器廠商</div> &ensp;&ensp;<img src="../IMG/ShowSupplier/chevron-down.png" width="18vw" height="10vw">
+                        </div>
+                        <select class="selectform" id="selectform"></select>
+                    </th>
+                    <th id="MFG_Abandoned" width="15%">製造日期</th>
+                    <th id="Usedate" width="15%" style="display: none;">使用天數</th>
+                    <th id="Usecount" style="display: none;">使用次數</th>
+                </tr>
+            </thead>
+            <tbody class="buildinglist" id="list">
+            
+            </tbody>
+            <tr style="background-color: #F4F2FF;">
+                <td colspan="8">
+                    <div class="page">
+                        <button class="page_button" onclick="PageOn1()"><</button>
+                        <span id="page_nuber" class="page_nuber"></span>
+                        <button class="page_button" onclick="PageOn2()">></button> 
+                    </div>
+                    &nbsp;
+                </td>
+            </tr>
+            <tfoot id="print_click" class="buildinglist" style="display: none;">
+                
+            </tfoot>
+        </table>
+    </div>
+
+    <!-- 上傳資料 -->
+    <div id="post_check" tabindex="-1" class="post_check">
+        
+    </div>
+
+    <script>
+        let showContent = document.getElementById('showContent');
+        let selContent = document.getElementById('selectform');
+        showContent.onclick = function(e){
+            selContent.style.display = 'block';
+            if(selContent.options.length>5){selContent.size=5}
+            else{selContent.size=selContent.options.length}
+            selContent.focus();
+        }
+        selContent.onblur = function(e){
+            selContent.style.display = 'none';
+        }
+        
+        selContent.onchange = function(e){
+            var option = this.options[this.selectedIndex];
+            if(option.value==""){
+                showContent.children[0].innerText =option.title;
+                showContent.children[0].title ="";
+            }else{
+                showContent.children[0].innerHTML =option.text; 
+                showContent.children[0].title =option.value;  
+            }
+            selContent.style.display = 'none';
+            Page="1";
+            //localStorage.clear();
+            Selectform("0");    
+        }
+    </script>
+
+    <script>
+        let Page="1", // 當前頁數 
+            dataLen, // 顯示資料長度
+            dataLen_Max=0, // 顯示資料總數
+            endPage, //取得總比數
+            valueOn1="", //取得類型篩選資料
+            valueOn2="", //取得廠商篩選資料
+            x=0,y=0, // 處理下拉式資料，避免重複新增
+            pandas=[]; // 將所有資料放在這
+        localStorage.clear(); //清空儲存資料
+                  
+        var page_button=document.getElementsByClassName("page_button"),
+            page_nuber=document.getElementsByClassName("page_nuber");
+        
+        //從API獲得滅火器資訊 閒置滅火器API
+        function showFire1(gettype,getsupplier,Page){
+            fetch(DataAPI+'showFire1.php?Type='+ gettype + '&Supplier='+ getsupplier + '&Page=' + Page)
+            .then( response => response.json() )
+            .then( data => {
+
+                var el = document.getElementById("list");
+                if(data["status"]=="fail"){
+                    el.innerHTML="<td colspan='8' style='padding-left:5vw'>"+errordata[data["data"]]+"</td>";
+                    console.log(errordata[data["data"]]);
+                }else{
+                    
+                    dataLen = data["data"].length; //資料長度
+                    var str = ""; //建立一個空字串，要將資料填入的
+                    var page_nuber=document.getElementById("page_nuber");
+
+                    if(Page=="0"){
+                        var selectform=document.getElementById("selectform");
+                        var select_location=["全部廠商"],
+                            select_location1; // 去除重複元素用
+                        dataLen_Max=dataLen;
+                        Page="1";
+                        endPage=Math.ceil(dataLen_Max/10); //無條件進位  
+                        pandas=[];
+                        
+                        for (var i = 0; i < dataLen_Max; i++) {
+                            pandas[pandas.length]=["checked",true,data["data"][i].Num,data["data"][i].Type,data["data"][i].Supplier,data["data"][i].Date]
+                        } 
+
+                        if(x==0){
+                            $("#selectform").empty(); // 清除下拉式選單中所有的資料   
+                            for (var i=0; i<dataLen_Max; i++){ // 將 Building 欄位所有資料存在陣列，
+                                select_location[select_location.length]=data["data"][i].Supplier;
+                            };
+                            select_location1=[...new Set(select_location)]; // 去除重複元素
+                            for (var i=0; i<select_location1.length;i++){ // 將陣列中的元素加在下拉式選單裡
+                                if(i==0){
+                                    selectform.add(new Option(select_location1[i],""));
+                                    selectform.options[0].title='滅火器廠商';
+                                }else{
+                                    selectform.add(new Option(select_location1[i],select_location1[i]));
+                                }
+                            };
+                            x=x+1; 
+                        };
+                        showFire1(valueOn2,valueOn1,'1');
+                    }else{
+                        
+                       // for 迴圈
+                        for (var i = 0; i < dataLen; i++) {
+                            var content = "<tr class='checked nullbox'>" +  "<td class='checkbox'><input id='"+data["data"][i].Num+"' type='checkbox' name='items' onclick='Savecheckbox(this);'></td>" + 
+                                "<td id='"+i+"'>" + data["data"][i].Num +"</td>" + 
+                                "<td>" + data["data"][i].Type + "</td>" + 
+                                "<td>" + data["data"][i].Supplier + "</td>" + 
+                                "<td>" + data["data"][i].Date + "</td>" + "</tr>"; //組字串
+                            str += content; // 透過加總把 變數 content 的內容回傳到 str 中
+                        }
+                        el.innerHTML = str;
+                        //透過 el 選取到的 list，透過 innerHTML 的方式，把 str 裡的資料渲染到網頁上
+                        page_nuber.innerHTML=Page; // 顯示頁數
+                        PageNumber(); 
+                        Importcheckbox();
+                        console.log(pandas);           
+                    }        
+                }
+            });
+        };
+
+        //從API獲得滅火器資訊 換藥中滅火器API
+        function showFire2(gettype,getBuilding,Page){
+            fetch(DataAPI+'showFire2.php?Type='+ gettype + '&Building='+ getBuilding + '&Page=' + Page)
+            .then( response => response.json() )
+            .then( data => {
+
+                var el = document.getElementById("list");
+                if(data["status"]=="fail"){
+                    el.innerHTML="<td colspan='8' style='padding-left:5vw'>"+errordata[data["data"]]+"</td>";
+                    console.log(errordata[data["data"]]);
+                }else{
+                    console.log(data);
+                    
+                    dataLen = data["data"].length; //資料長度
+                    var str = ""; //建立一個空字串，要將資料填入的
+                    var page_nuber=document.getElementById("page_nuber");
+
+                    if(Page=="0"){
+                        var selectform=document.getElementById("selectform");
+                        var select_location=["全部位置"],
+                            select_location1; // 去除重複元素用
+                        dataLen_Max=dataLen;
+                        Page="1";
+                        endPage=Math.ceil(dataLen_Max/10); //無條件進位
+                        pandas=[];
+                        
+                        for (var i = 0; i < dataLen_Max; i++) {
+                            pandas[pandas.length]=["checked",true,data["data"][i].Num,data["data"][i].Type,data["data"][i].Date,
+                                data["data"][i].Building + data["data"][i].Floor +'樓'+ data["data"][i].Location]
+                        }
+                       
+                        if(x==0){ 
+                            $("#selectform").empty();  // 清除下拉式選單中所有的資料   
+                            for (var i=0; i<dataLen_Max; i++){ // 將 Building 欄位所有資料存在陣列，
+                                select_location[select_location.length]=data["data"][i].Building;
+                            };
+                            select_location1=[...new Set(select_location)]; // 去除重複元素
+                            for (var i=0; i<select_location1.length;i++){ // 將陣列中的元素加在下拉式選單裡
+                                if(i==0){
+                                    selectform.add(new Option(select_location1[i],""));
+                                    selectform.options[0].title='下架位置';
+                                }else{
+                                    selectform.add(new Option(select_location1[i],select_location1[i]));
+                                }                                
+                            };
+                            x=x+1; 
+                        }
+
+                        showFire2(valueOn2,valueOn1,'1');
+                    }else{
+                        // for 迴圈
+                        for (var i = 0; i < dataLen; i++) {
+                            var content = "<tr class='checked nullbox'>" +  "<td class='checkbox'><input id='"+data["data"][i].Num+"' type='checkbox' name='items' onclick='Savecheckbox(this);'></td>" + 
+                                "<td id='"+i+"'>" + data["data"][i].Num +"</td>" + 
+                                "<td>" + data["data"][i].Type + "</td>" + 
+                                "<td>" + data["data"][i].Date + "</td>"+
+                                "<td>" +  data["data"][i].Building + 
+                                    data["data"][i].Floor +'樓'+ 
+                                    data["data"][i].Location + "</td>" + "</tr>"; //組字串
+                            str += content; // 透過加總把 變數 content 的內容回傳到 str 中
+                        }
+                        el.innerHTML = str;
+                        //透過 el 選取到的 list，透過 innerHTML 的方式，把 str 裡的資料渲染到網頁上
+                        page_nuber.innerHTML=Page; // 顯示頁數
+                        PageNumber();
+                        Importcheckbox();   
+                        console.log(pandas); 
+                    }      
+                }
+            });
+        };
+
+        //從API獲得滅火器資訊 廢棄滅火器API
+        function showFire3(gettype,getsupplier,Page){
+            fetch(DataAPI+'showFire3.php?Type='+ gettype + '&Supplier='+ getsupplier + '&Page=' + Page)
+            .then( response => response.json() )
+            .then( data => {
+                
+                var el = document.getElementById("list");
+                if(data["status"]=="fail"){
+                    el.innerHTML="<td colspan='8' style='padding-left:5vw'>"+errordata[data["data"]]+"</td>";
+                    console.log(errordata[data["data"]]);
+                }else{
+                    console.log(data);
+                    dataLen = data["data"].length; //資料長度
+                    var str = ""; //建立一個空字串，要將資料填入的
+                    var page_nuber=document.getElementById("page_nuber");
+
+                    if(Page=="0"){
+                        var selectform=document.getElementById("selectform");
+                        var select_location=["全部廠商"],
+                            select_location1; // 去除重複元素用
+                        dataLen_Max=dataLen;
+                        Page="1";
+                        endPage=Math.ceil(dataLen_Max/10); //無條件進位                    
+                        pandas=[];
+                        
+                        for (var i = 0; i < dataLen_Max; i++) {
+                            pandas[pandas.length]=["checked",true,data["data"][i].Num,data["data"][i].Type,data["data"][i].Supplier,data["data"][i].Abandoned_date,data["data"][i].Use_Date,data["data"][i].Count]
+                        }
+                       
+                         
+                        if(x==0){
+                            $("#selectform").empty(); // 清除下拉式選單中所有的資料   
+                            for (var i=0; i<dataLen_Max; i++){ // 將 Building 欄位所有資料存在陣列，
+                                select_location[select_location.length]=data["data"][i].Supplier;
+                            };
+                            select_location1=[...new Set(select_location)]; // 去除重複元素
+                            for (var i=0; i<select_location1.length;i++){ // 將陣列中的元素加在下拉式選單裡
+                                if(i==0){
+                                    selectform.add(new Option(select_location1[i],""));
+                                    selectform.options[0].title='滅火器廠商';
+                                }else{
+                                    selectform.add(new Option(select_location1[i],select_location1[i]));
+                                }
+                            };
+                            x=x+1; 
+                        };
+                        showFire3(valueOn2,valueOn1,'1');
+                    }else{
+                        
+                       // for 迴圈
+                        for (var i = 0; i < dataLen; i++) {
+                            var content = "<tr class='checked nullbox'>" +  "<td class='checkbox'><input id='"+data["data"][i].Num+"' type='checkbox' name='items' onclick='Savecheckbox(this);'></td>" + 
+                                "<td id='"+i+"'>" + data["data"][i].Num +"</td>" + 
+                                "<td>" + data["data"][i].Type + "</td>" + 
+                                "<td>" + data["data"][i].Supplier + "</td>" + 
+                                "<td>" + data["data"][i].Abandoned_date + "</td>" +
+                                "<td>" + data["data"][i].Use_Date+ "天" + "</td>"+
+                                "<td>" + data["data"][i].Count + "</td>"+ "</tr>"; //組字串
+                            str += content; // 透過加總把 變數 content 的內容回傳到 str 中
+                        }
+                        el.innerHTML = str;
+                        //透過 el 選取到的 list，透過 innerHTML 的方式，把 str 裡的資料渲染到網頁上
+                        page_nuber.innerHTML=Page; // 顯示頁數
+                        PageNumber(); 
+                        Importcheckbox();  
+                        console.log(pandas);                    
+                    }        
+                }
+            });
+        };
+      
+        //全選/不選 列印設定
+		function AllChecked(){            
+            var checkItems1=document.getElementById("checkItems");
+            if(checkItems1.checked==true){
+                var checkElements=document.getElementsByName('items');
+                var checkprints=document.getElementsByClassName('checked');
+                
+                for(let i=0;i<pandas.length;i++){
+                    localStorage.setItem(pandas[i][2],JSON.stringify(pandas[i])); 
+                }
+
+		        for(var i=0;i<checkElements.length;i++){
+			        var checkElement=checkElements[i];
+                    var checkprint = checkprints[i];
+                    var index_pa=checkElement.parentNode.nextSibling;
+                    // 方法一
+                    // checkElement.setAttribute('checked',' checked');
+                    // 方法二
+			        checkElement.checked="checked";
+                    checkprint.classList.remove("nullbox");                                  
+                }
+            }else{
+                var checkElements=document.getElementsByName('items');
+                var checkprints=document.getElementsByClassName('checked');
+			    for(var i=0;i<checkElements.length;i++){
+                    var checkElement=checkElements[i];
+                    var checkprint = checkprints[i];
+                    // 方法二 火狐和ie都支援
+                    checkElement.checked=null;
+                    checkprint.classList.add("nullbox");        
+                
+                    //localStorage.removeItem(checkElement.id);
+                }
+                //localStorage.removeItem("AllClick "+Page);
+                localStorage.clear();
+            }            
+        };
+        
+        //將複選框存起來
+        function Savecheckbox(index){ 
+            let  checkElements=document.querySelectorAll('input[name=items]');
+            let index_pa=index.parentNode.nextSibling;
+            let index_pa_pa=index.parentNode.parentNode;
+            
+            var checkboxsave=["checked",index.checked];
+
+            for(let i=1;i<index_pa_pa.children.length;i++){
+                checkboxsave[i+1]=index_pa_pa.children[i].innerText;
+            }
+
+            if(checkboxsave[1]==true){
+                localStorage.setItem(index.id,JSON.stringify(checkboxsave));
+            }else{
+                localStorage.removeItem(index.id);
+            }     
+        };
+
+        // 將儲存的複選框在網頁顯示
+        function Importcheckbox(){
+            let  checkElements=document.querySelectorAll('input[name=items]');
+            for (let checkbox1 of checkElements) {
+                var checkedkeyValue=JSON.parse(localStorage.getItem(checkbox1.id));
+                if(checkedkeyValue==null){
+                    continue;
+                }
+                document.getElementById(checkbox1.id).checked=checkedkeyValue[1];
+                document.getElementById(checkbox1.id).parentNode.parentNode.className=checkedkeyValue[0];
+            };
+            /* var checkedkeyValueAll=JSON.parse(localStorage.getItem("AllClick "+Page));
+            document.getElementById("checkItems").checked=checkedkeyValueAll; */
+        }
+
+        //篩選器
+        function Selectform(Page1){
+            /*  var myselect = document.getElementById('selectform');
+            var value = myselect.options[myselect.selectedIndex].value; */
+            var value1 = document.getElementById('showContent1').title;
+            var value2 = document.getElementById('selecttype').title;
+            value2=document.getElementById('selecttype').options[document.getElementById('selecttype').selectedIndex].value;
+
+            valueOn1=value1;
+            valueOn2=value2;
+            
+            if(TheSwitch==0){
+                showFire1(value2,value1,Page1); 
+            }else if(TheSwitch==1){
+                showFire2(value2,value1,Page1); 
+            }else if(TheSwitch==2){
+                showFire3(value2,value1,Page1); 
+            }     
+        }
+        
+        let TheSwitch = 0;
+        //切換閒置查詢
+        function FireSwitched1(Switch1){ 
+            var BoxSwitch = document.getElementsByClassName("BoxSwitch");
+            var myselect1 = document.getElementById('selecttype');
+            var myselect2 = document.getElementById('showContent1');
+            localStorage.clear(); //清空儲存資料
+
+            document.getElementById("checkItems").checked=null;
+            document.getElementById("showContent1").innerHTML ="滅火器廠商";
+            document.getElementById("Firedown").style.display='none';
+            document.getElementById("MFG_Abandoned").style.display='table-cell';
+            document.getElementById("Usedate").style.display='none';
+            document.getElementById("Usecount").style.display='none';
+            document.getElementById("MFG_Abandoned").innerText='製造日期';
+
+            Page="1";
+            TheSwitch = 0;
+            myselect2.title='';myselect1.value='';
+            localStorage.clear();
+            Selectform("0");
+            Switch1.className="BoxSwitchON";
+            Switch1.nextElementSibling.className="BoxSwitchOFF";
+            Switch1.nextElementSibling.nextElementSibling.className="BoxSwitchOFF";
+            x=0;y=0;       
+        }
+        //切換換藥中查詢
+        function FireSwitched2(Switch2){  
+            var BoxSwitch = document.getElementsByClassName("BoxSwitch");
+            var myselect1 = document.getElementById('selecttype');
+            var myselect2 = document.getElementById('showContent1');
+            localStorage.clear(); //清空儲存資料
+
+            document.getElementById("checkItems").checked=null;
+            document.getElementById("showContent1").innerHTML ="下架位置";
+            document.getElementById("Firedown").style.display='table-cell';
+            document.getElementById("MFG_Abandoned").style.display='none';
+            document.getElementById("Usedate").style.display='none';
+            document.getElementById("Usecount").style.display='none';
+
+            Page="1";
+            TheSwitch = 1;
+            myselect2.title='';myselect1.value='';
+            localStorage.clear();
+            Selectform("0");
+            Switch2.className="BoxSwitchON";
+            Switch2.previousElementSibling.className="BoxSwitchOFF";
+            Switch2.nextElementSibling.className="BoxSwitchOFF";
+            x=0;y=0;       
+        }
+        //切換廢棄查詢
+        function FireSwitched3(Switch3){  
+            var BoxSwitch = document.getElementsByClassName("BoxSwitch");
+            var myselect1 = document.getElementById('selecttype');
+            var myselect2 = document.getElementById('showContent1');
+            localStorage.clear(); //清空儲存資料
+
+            document.getElementById("checkItems").checked=null;
+            document.getElementById("showContent1").innerHTML ="滅火器廠商";
+            document.getElementById("Firedown").style.display='none';
+            document.getElementById("MFG_Abandoned").style.display='table-cell';
+            document.getElementById("Usedate").style.display='table-cell';
+            document.getElementById("Usecount").style.display='table-cell';
+            document.getElementById("MFG_Abandoned").innerText='廢棄時間';
+
+            Page="1";
+            TheSwitch = 2;
+            myselect2.title='';myselect1.value='';
+            localStorage.clear();
+            Selectform("0");
+            Switch3.className="BoxSwitchON";
+            Switch3.previousElementSibling.className="BoxSwitchOFF";
+            Switch3.previousElementSibling.previousElementSibling.className="BoxSwitchOFF";
+            x=0;y=0;       
+        }
+    </script>
+    <script>
+        function printData(){ //列印函數
+            var oldstr = document.getElementById("list").innerHTML; //將網頁內容存起來
+            var str1='';
+            var list1=document.getElementById('list');
+            for(let i=0 ; i<localStorage.length ; i++){
+                var print_dt=JSON.parse(localStorage.getItem(localStorage.key(i)));
+                if(print_dt[1]==true){
+                    var content="<tr class='checked'>";
+                        content=content+"<td style='padding: 1vw;'>"+print_dt[2]+"</td>";
+                    for(let ii=3; ii<print_dt.length;ii++){
+                        if(print_dt[ii]==''){continue}
+                        content=content+"<td>"+print_dt[ii]+"</td>";
+                    }
+                    content=content+"</tr>"
+                    str1 +=content;
+                }  
+            }
+            if(str1==''){
+                alert("尚未勾選要列印的項目");
+            }else{
+                list1.innerHTML=str1; //將要列印的資料顯示在網頁上
+                window.print(); //呼叫列印視窗
+                document.getElementById("list").innerHTML=oldstr; //復原原本網頁內容
+
+                // 將儲存的複選框在網頁顯示
+                Importcheckbox();
+            }         
+        }
+    </script>
+    <!-- <script>
+        function pandas_sort(){
+            pandas.sort(function(a,b){
+                if(a[5]==b[5]){
+                    return (a[2] > b[2]) ? -1 : 1;
+                }else{
+                    return (a[5] > b[5]) ? -1 : 1;
+                }
+            })
+            
+            
+        }
+    </script> -->
+</body>
+</html>

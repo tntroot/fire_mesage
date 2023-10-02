@@ -1,0 +1,187 @@
+.seart1{
+    /* 表格外容器設定 */
+    padding: 4% 3% 2% 3%;
+}
+
+.selectdiv{
+    margin: auto;
+    width: fit-content;
+    margin-top: 2vw;
+    border: black 2px solid;
+    padding: 0.5vw 1vw 0.5vw 1vw;
+    font-size: 2vw;
+    font-weight: bolder;
+    border-radius: 0.5vw;
+    background-color: white;
+}
+
+.showContent{
+    /*在選擇框的最右側中間顯示小箭頭圖片*/
+  /* background: url("../IMG/ShowSupplier/chevron-down.png") no-repeat scroll right center transparent; */
+  /*為下拉小箭頭留出一點位置，避免被文字覆蓋*/
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: fit-content; /* 長度跟隨內容大小 */
+    min-width: 17vw;  
+}
+.selectform, .selecttype{
+    /*Chrome和Firefox裡面的邊框是不一樣的，所以複寫了一下*/
+  /* border: solid 1px #000; */
+
+  /*很關鍵：將預設的select選擇框樣式清除*/ /**Larry */
+  appearance:none;
+  -moz-appearance:none;
+  -webkit-appearance:none;
+  color: #616893;
+  font-size: 1vw;
+  font-weight: 600;
+  text-align: left;
+  /* border: none; */
+  outline: none;
+  position: absolute;
+  display: none;
+  overflow-y: auto;
+}
+.selecttype{
+    position: relative;
+    display: table-cell;
+    border: none;
+    background-color: transparent;
+    /*在選擇框的最右側中間顯示小箭頭圖片*/
+    background: url("../IMG/ShowSupplier/chevron-down.png") no-repeat scroll right center transparent;
+    /*為下拉小箭頭留出一點位置，避免被文字覆蓋*/
+    padding-right: 2vw;
+    cursor: pointer;
+    background-size: 1vw;
+}
+/*清除ie的預設選擇框樣式清除，隱藏下拉箭頭*/ /**確認生效了！！！*/
+.selectform::-ms-expand{ 
+    display: none; 
+}
+.selectform option:hover{
+    background-color: rgb(4 151 243);
+    color: white;
+}
+
+.selectform{  
+    max-width: 22vw;   
+}
+.selectform::-webkit-scrollbar{
+    /* 更改滾動條粗細 */
+    height:0.4vw;
+    width: 0.4vw;
+}
+.selectform::-webkit-scrollbar-thumb{
+    /* 更改滾動條顏色 */
+    border-radius: 40vw;
+    background-color: #959292;
+}
+
+.location,.Errorlocation{
+    margin: auto;
+    border: #645B5B 1px solid;
+    background-color: white;
+    padding: 1vw 0vw 2vw 2vw;
+    margin-top: 2vw;
+    width: 60vw;
+    box-sizing: border-box;
+    border-radius: 1.5vw;
+}
+.Errorlocation{
+    text-align: center;
+    font-size: 2vw;
+    font-weight: bolder;
+}
+.location h1{
+    text-align: center;
+    font-size: 2vw;
+}
+.location_pair,.location_nopair{
+    min-width: 5vw;
+    background-color: #E3E7DA;
+    text-align: center;
+    padding: 0.5vw 1.5vw 0.5vw 1.5vw; 
+    border-radius: 10vw;
+    font-size: 1vw;
+    margin: 0vw 1vw 1vw 0vw;
+    font-weight: bold;
+}
+.location_nopair{
+    background-color: #EAF9CC;
+    padding: 0.5vw 1.5vw 0.5vw 1vw;
+    
+}
+
+.post_supplier{
+    display: none;
+    position: fixed;
+    top: 50%;left: 50%;
+    transform: translate(-50%,-50%);
+    background-color: white;
+    border: #333333 1px solid;
+    border-radius: 1vw;
+    padding: 1vw 2vw 1vw 2vw;
+    font-weight: bolder;
+    z-index: 100;
+    font-size: 1.2vw;
+}
+.insert_supplier_button{
+    font-size: 1.2vw;
+    padding: 0.5vw 2vw 0.5vw 2vw;
+    background-color: #333333;
+    color: white;
+    border-radius: 2vw;
+    font-weight: bolder;
+    cursor: pointer;
+}
+
+/* 篩選排序按鈕樣式 */
+.sortfilter{
+    position: relative;
+    color: #8B83BA;
+    width: fit-content;
+    border: #8B83BA 2px solid;
+    border-radius: 0.5vw;
+    padding: 0.1vw 0.7vw 0.1vw 0.7vw;
+    margin: 0.8vw 1vw 0.8vw 0vw;
+    cursor: pointer;
+}
+
+/* 上傳設定 */
+.post_check{
+    display: none;
+    position: fixed;
+    margin: 0 auto;
+    padding: 1vw 3vw 1vw 3vw;
+    top: 50%;left: 50%;
+    transform: translate(-50%,-50%);
+    background-color: white;
+    border: black 1px solid;
+    border-radius: 1vw;
+    text-align: center;
+    font-size: 1vw;
+    z-index: 100;
+}
+.post_check div button, .post_check button{
+    padding: 0.5vw 1vw 0.5vw 1vw;
+    background-color: #333333;
+    color: white;
+    font-size: 1vw;
+    border-radius: 2vw;
+    font-weight: bolder;
+    cursor: pointer;
+}
+
+.bg_light{
+    /* 背景變暗 */
+    display: none;
+    position: fixed;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.274);
+    z-index: 50;
+}
