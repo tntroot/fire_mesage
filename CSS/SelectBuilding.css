@@ -107,7 +107,7 @@
 @media print {/* 列印設定 */
     * {
       -webkit-print-color-adjust: exact !important; /* 顏色正常顯示 */
-        font-size: 0.5vw;
+        font-size: 2vw;
         margin: 0;
     }
     .noBreak {

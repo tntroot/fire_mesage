@@ -1,7 +1,7 @@
 <?php
 try{
     $pdo = new PDO(
-        'mysql:host=localhost:3307;dbname=fire_management;charset=utf8mb4',
+        'mysql:host=localhost:3308;dbname=fire_management;charset=utf8mb4',
         'root',
         '',
         [

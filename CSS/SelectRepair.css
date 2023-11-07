@@ -200,7 +200,7 @@
     * {
         white-space: normal;
       -webkit-print-color-adjust: exact !important; /* 顏色正常顯示 */
-        font-size: 0.1vw;
+        font-size: 2vw;
         margin: 0;
         padding: 1vw;
     }
@@ -243,8 +243,8 @@
     #Boxhead{
         padding: 1vw;
     }
-    #selectform{
-        font-size: 0.5vw;
+    #selecttype{
+        font-size: 2vw;
     }
     .showContent img{
         display: none;

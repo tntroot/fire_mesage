@@ -189,7 +189,7 @@
 @media print {/* 列印設定 */
     * {
       -webkit-print-color-adjust: exact !important; /* 顏色正常顯示 */
-        font-size: 0.5vw;
+        font-size: 2vw;
         margin: 0;
     }
     .noBreak {
@@ -223,7 +223,7 @@
         width: 100%;
         left: 0%;
         top: 0%;
-        padding: 0;
+        padding: 0px;
     }
     .page{
         display: none;
@@ -235,7 +235,7 @@
     #Boxhead1{
         width: 20%;
     }
-    #selectform{
+    #selecttype{
         font-size: 2.5vw;
     }
     .showContent img{

@@ -356,8 +356,9 @@
     /* 列印設定 */
     * {
         -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
         /* 顏色正常顯示 */
-        font-size: 1vw;
+        font-size: 2vw;
         margin: 0;
     }
 
@@ -414,8 +415,8 @@
     }
 
     .selecttype {
-        font-size: 0.5vw;
         background: none;
+        font-size: 2vw;
     }
 
     .showContent img {

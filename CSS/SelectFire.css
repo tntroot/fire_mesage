@@ -210,7 +210,7 @@
 @media print {/* 列印設定 */
     * {
       -webkit-print-color-adjust: exact !important; /* 顏色正常顯示 */
-        font-size: 0.5vw;
+        font-size: 2vw;
         margin: 0;
     }
     .noBreak {
@@ -252,8 +252,8 @@
     #Boxhead{ /* 1223 */
         padding: 1vw;
     }
-    #selectform{
-        font-size: 0.5vw;
+    #selecttype{
+        font-size: 2vw;
     }
     .showContent img{
         display: none;
