@@ -362,7 +362,7 @@
             if(Building_error[0].innerText=="" && Building_error[1].innerText==""){
                 fetch(DataAPI+'correctBuilding.php',{
                 method:"POST", 
-                mode: "no-cors", //需添加這段才能發送請求
+                mode: "cors", //需添加這段才能發送請求
                 headers: {
                     'Accept': 'application/json, text/plain, */*',
                     'Content-Type': "application/x-www-form-urlencoded"
@@ -447,7 +447,7 @@
             var FireNumber_s=document.getElementsByClassName('FireNumber_s');
             fetch(DataAPI+'addBuilding.php',{
                 method:"POST", 
-                mode: "no-cors", //需添加這段才能發送請求
+                mode: "cors", //需添加這段才能發送請求
                 headers: {
                     'Accept': 'application/json, text/plain, */*',
                     'Content-Type': "application/x-www-form-urlencoded"

@@ -481,7 +481,7 @@
                 if(update_dt[2]==null){continue};  // 遇到全選框則跳過
                 await fetch(DataAPI+'addTargetData.php',{
                     method:"POST", 
-                    mode: "no-cors", //需添加這段才能發送請求
+                    mode: "cors", //需添加這段才能發送請求
                     headers: {
                         'Accept': 'application/json, text/plain, */*',
                         'Content-Type': "application/x-www-form-urlencoded"

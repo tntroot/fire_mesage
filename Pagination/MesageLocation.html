@@ -215,7 +215,7 @@
 
                     fetch(DataAPI+'correctLocation.php',{
                         method:"POST", 
-                        mode: "no-cors", //需添加這段才能發送請求
+                        mode: "cors", //需添加這段才能發送請求
                         headers: {
                             'Accept': 'application/json, text/plain, */*',
                             'Content-Type': "application/x-www-form-urlencoded"
@@ -226,10 +226,7 @@
                             "&Location="+index.dataset.name+
                             "&New_Location="+values
                     })
-                    .then(response => ()=>{
-                        console.log(response);
-                        return response.json();
-                    } )
+                    .then( response => response.json() )
                     .then(data => {
                         if(data["status"]=="fail"){
                             index.innerHTML=index.dataset.name;
@@ -260,7 +257,7 @@
 
                     fetch(DataAPI+'addLocation.php',{
                         method:"POST", 
-                        mode: "no-cors", //需添加這段才能發送請求
+                        mode: "cors", //需添加這段才能發送請求
                         headers: {
                             'Accept': 'application/json, text/plain, */*',
                             'Content-Type': "application/x-www-form-urlencoded"
@@ -270,10 +267,7 @@
                             "&Floor="+index.dataset.floor+
                             "&Location="+values
                     })
-                    .then(response => ()=>{
-                        console.log(response);
-                        return response.json();
-                    })
+                    .then( response =>  response.json() )
                     .then(data => {
                         if(data["status"]=="fail" || values==""){
                             if(values!=""){
@@ -286,6 +280,9 @@
                             Selectform(selectform.value,showContent.dataset.build_floor);
                         }
                         two_number=1;
+                    })
+                    .catch(err => {
+                        console.log(err);
                     });   
                 };
                 index.innerHTML="";
@@ -315,7 +312,7 @@
 
             fetch(DataAPI+'ScrappedBox.php',{
                 method:"POST", 
-                mode: "no-cors", //需添加這段才能發送請求
+                mode: "cors", //需添加這段才能發送請求
                 headers: {
                     'Accept': 'application/json, text/plain, */*',
                     'Content-Type': "application/x-www-form-urlencoded"
