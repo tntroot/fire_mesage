@@ -226,7 +226,10 @@
                             "&Location="+index.dataset.name+
                             "&New_Location="+values
                     })
-                    .then(response => response.json())
+                    .then(response => ()=>{
+                        console.log(response);
+                        return response.json();
+                    } )
                     .then(data => {
                         if(data["status"]=="fail"){
                             index.innerHTML=index.dataset.name;
