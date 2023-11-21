@@ -9,4 +9,4 @@
 1. 下載並安裝 XAMPP、HeidiSQL
 2. 把專案放到 XAMPP 目錄的 htdocs 資料夾
 3. 開啟 HeidiSQL 並建立資料庫，設定如圖
-![GITHUB](Screan/heidiSQL.png HeidiSQL)
+![GITHUB](Screan/heidiSQL.png)
