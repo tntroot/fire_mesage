@@ -1,9 +1,9 @@
 <?php
 try{
     $pdo = new PDO(
-        'mysql:host=localhost:3308;dbname=fire_management;charset=utf8mb4',
+        'mysql:host=localhost:3306;dbname=fire_management;charset=utf8mb4',
         'root',
-        '',
+        'root',
         [
             PDO::ATTR_EMULATE_PREPARES => false,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
