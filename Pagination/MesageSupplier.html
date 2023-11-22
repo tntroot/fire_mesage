@@ -214,6 +214,11 @@
                         console.log(strall);                                         
                     }        
                 }
+            })
+            .catch(err => {
+                console.log(err);
+                var el = document.getElementById("list");
+                el.innerHTML="<td colspan='5' style='padding-left:5vw'>"+errordata[4]+"</td>";
             });
         }
 
@@ -281,11 +286,8 @@
             if(Building_error[0].innerText=="" && Building_error[1].innerText==""){
                 fetch(DataAPI+'correctSupplier.php',{
                     method:"POST", 
-                    mode: "cors", //需添加這段才能發送請求
-                    headers: {
-                        'Accept': 'application/json, text/plain, */*',
-                        'Content-Type': "application/x-www-form-urlencoded"
-                    },
+                    mode: fetchAPI_POST_head.mode, //需添加這段才能發送請求
+                    headers: fetchAPI_POST_head.headers,
                     // 原本是 JSON 檔，需轉成 formdate 後台才接的到參數，jquery 會自動幫你轉
                     body:"Name="+post_supplierbox[0].placeholder+
                         "&New_Name="+post_supplierbox[0].value+
@@ -309,6 +311,15 @@
                         post_check.style.padding="1vw 5vw 1vw 5vw";
                         setTimeout("location.href=''",3000); //三秒之後跳轉頁面
                     }
+                })
+                .catch(err => {
+                    console.log(err);
+                    post_check.style.display='block';
+                    post_supplier.style.display="none";
+                    post_check.innerHTML='<h2>'+'修改失敗'+'</h2>'+
+                        "<h2>"+errordata[4]+"</h2>"+
+                        "<button style='background-color: #333333;' onclick='location.href=&apos;&apos;'>"+"確定"+"</button>";
+                    post_check.style.padding="1vw 5vw 1vw 5vw"; 
                 }); 
             }
             return false;
@@ -342,11 +353,8 @@
             var post_supplierbox=document.getElementsByClassName('post_supplierbox');
             fetch(DataAPI+'addSupplier.php',{
                     method:"POST", 
-                    mode: "cors", //需添加這段才能發送請求
-                    headers: {
-                        'Accept': 'application/json, text/plain, */*',
-                        'Content-Type': "application/x-www-form-urlencoded"
-                    },
+                    mode: fetchAPI_POST_head.mode, //需添加這段才能發送請求
+                    headers: fetchAPI_POST_head.headers,
                     // 原本是 JSON 檔，需轉成 formdate 後台才接的到參數，jquery 會自動幫你轉
                     body:"Name="+post_supplierbox[2].value+
                         "&Type="+TheSupplierSwitch+
@@ -370,6 +378,17 @@
                         post_check.style.padding="1vw 5vw 1vw 5vw";
                         setTimeout("location.href=''",3000); //三秒之後跳轉頁面
                     }
+                })
+                .catch(err => {
+                    console.log(err);
+                    post_check.style.display='block';
+
+                    post_supplier[1].style.display="none";
+                    post_supplier[2].style.display="none";
+                    post_check.innerHTML='<h2>'+'新增失敗'+'</h2>'+
+                        "<h2>"+errordata[4]+"</h2>"+
+                        "<button class='insert_supplier_button' style='background-color: #333333;' onclick='location.href=&apos;&apos;'>"+"確定"+"</button>";
+                    post_check.style.padding="1vw 5vw 1vw 5vw"; 
                 }); 
         }
 

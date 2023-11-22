@@ -310,6 +310,11 @@
                         Importcheckbox();                                             
                     }        
                 }
+            })
+            .catch(err => {
+                console.log(err);
+                var el = document.getElementById("list");
+                el.innerHTML="<td colspan='5' style='padding-left:5vw'>"+errordata[4]+"</td>";
             });
         }
 
@@ -436,11 +441,8 @@
             }else{
                 fetch(DataAPI+'correctFire.php',{
                     method:"POST", 
-                    mode: "cors", //需添加這段才能發送請求
-                    headers: {
-                        'Accept': 'application/json, text/plain, */*',
-                        'Content-Type': "application/x-www-form-urlencoded"
-                    },
+                    mode: fetchAPI_POST_head.mode, //需添加這段才能發送請求
+                    headers: fetchAPI_POST_head.headers,
                     // 原本是 JSON 檔，需轉成 formdate 後台才接的到參數，jquery 會自動幫你轉
                     body:"Num="+FireNum_post+
                         "&Type="+FireType_post.value+
@@ -464,6 +466,14 @@
                         post_check.style.padding="1vw 5vw 1vw 5vw";
                         setTimeout("location.href=''",3000); //三秒之後跳轉頁面
                     }
+                })
+                .catch(err => {
+                    post_check.style.display='block';
+                    post_supplier.style.display="none";
+                    post_check.innerHTML='<h2>'+'修改失敗'+'</h2>'+
+                        "<h2>"+errordata[4]+"</h2>"+
+                        "<button style='background-color: #333333;' onclick='location.href=&apos;&apos;'>"+"確定"+"</button>";
+                    post_check.style.padding="1vw 5vw 1vw 5vw";    
                 }); 
             }
         }
@@ -600,11 +610,8 @@
 
             fetch(DataAPI+'addFire.php',{
                 method:"POST", 
-                mode: "cors", //需添加這段才能發送請求
-                headers: {
-                    'Accept': 'application/json, text/plain, */*',
-                    'Content-Type': "application/x-www-form-urlencoded"
-                },
+                mode: fetchAPI_POST_head.mode, //需添加這段才能發送請求
+                headers: fetchAPI_POST_head.headers,
                 // 原本是 JSON 檔，需轉成 formdate 後台才接的到參數，jquery 會自動幫你轉
                 body:"Type="+FireType_insert.value+
                     "&MFG="+FireMFG_insert.value+
@@ -630,6 +637,16 @@
                     post_check.style.padding="1vw 5vw 1vw 5vw";
                     setTimeout("location.href=''",3000); //三秒之後跳轉頁面
                 }
+            })
+            .catch(err => {
+                post_check.style.display='block';
+                
+                post_supplier[1].style.display="none";
+                post_supplier[2].style.display="none";
+                post_check.innerHTML='<h2>'+'新增失敗'+'</h2>'+
+                    "<h2>"+errordata[4]+"</h2>"+
+                    "<button class='insert_supplier_button' style='background-color: #333333;' onclick='location.href=&apos;&apos;'>"+"確定"+"</button>";
+                post_check.style.padding="1vw 5vw 1vw 5vw"; 
             }); 
         }
 
@@ -646,11 +663,8 @@
                 if(update_dt[1]==null){continue};  // 遇到全選框則跳過
                 await fetch(DataAPI+'ScrappedFire.php',{
                     method:"POST", 
-                    mode: "cors", //需添加這段才能發送請求
-                    headers: {
-                        'Accept': 'application/json, text/plain, */*',
-                        'Content-Type': "application/x-www-form-urlencoded"
-                    },
+                    mode: fetchAPI_POST_head.mode, //需添加這段才能發送請求
+                    headers: fetchAPI_POST_head.headers,
                     // 原本是 JSON 檔，需轉成 formdate 後台才接的到參數，jquery 會自動幫你轉
                     body:"Num="+update_dt[3]
                 })
@@ -662,6 +676,11 @@
                         update_yes1=[false,errordata[data["data"]]];
                         update_error[update_error.length]=update_dt[2];    
                     }
+                })
+                .catch(err => {
+                    console.log(err);
+                    update_yes1=[false,errordata[data["data"]]];
+                    update_error[update_error.length]=update_dt[2]; 
                 }); 
                 
             };
@@ -726,6 +745,13 @@
                         SupplierName3.add(new Option(select_location1[i],select_location1[i]));                        
                     };                     
                 }
+            })
+            .catch(err => {
+                var SupplierName=document.getElementById("SupplierName");
+                var SupplierName3=document.getElementById("SupplierName3");
+                
+                SupplierName.add(new Option(errordata[4],errordata[4]));
+                SupplierName3.add(new Option(errordata[4],errordata[4]));
             });
         }
     </script>

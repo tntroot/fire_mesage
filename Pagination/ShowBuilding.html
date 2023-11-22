@@ -126,6 +126,11 @@
                         console.log(pandas);                  
                     }        
                 }
+            })
+            .catch(err => {
+                console.log(err);
+                var el = document.getElementById("list");
+                el.innerHTML="<td colspan='4' style='padding-left:5vw'>"+errordata[4]+"</td>";
             });
         }
 

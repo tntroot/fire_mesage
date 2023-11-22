@@ -166,6 +166,11 @@
                         console.log(pandas);                   
                     }        
                 }
+            })
+            .catch(err => {
+                console.log(err);
+                var el = document.getElementById("list");
+                el.innerHTML="<td colspan='9' style='padding-left:5vw'>"+errordata[4]+"</td>";
             });
         }
 
@@ -221,6 +226,11 @@
                         console.log(pandas);                  
                     }        
                 }
+            })
+            .catch(err => {
+                console.log(err);
+                var el = document.getElementById("list");
+                el.innerHTML="<td colspan='9' style='padding-left:5vw'>"+errordata[4]+"</td>";
             });
         }
         
@@ -402,11 +412,8 @@
                 console.log(update_dt[2]);
                 await fetch(DataAPI+'addTargetData.php',{
                     method:"POST", 
-                    mode: "cors", //需添加這段才能發送請求
-                    headers: {
-                        'Accept': 'application/json, text/plain, */*',
-                        'Content-Type': "application/x-www-form-urlencoded"
-                    },
+                    mode: fetchAPI_POST_head.mode, //需添加這段才能發送請求
+                    headers: fetchAPI_POST_head.headers,
                     // 原本是 JSON 檔，需轉成 formdate 後台才接的到參數，jquery 會自動幫你轉
                     body:"Data="+update_dt[2]+"&Target=維修"
                 })
@@ -417,6 +424,11 @@
                         update_yes1=[false,errordata[data["data"]]];
                         update_error[update_error.length]="&nbsp;"+update_dt[2];    
                     }
+                })
+                .catch(err => {
+                    console.log(err);
+                    update_yes1=[false,errordata[4]];
+                    update_error[update_error.length]="&nbsp;"+update_dt[2]; 
                 });                 
             };
             update_error = update_error.join(', ').replace(/(B12)/g, '<span style="white-space:nowrap;">$1</span>');

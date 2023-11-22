@@ -1,6 +1,15 @@
 var DataAPI = 'http://localhost/Fire_mesage/PHP/API/'; 
 // var DataAPI = '../PHP/API/';
-var errordata = ["連線失敗", "沒有接收到參數", "重複資料", "格式不符", "林偉倫在搞", "查無資料", "狀態不符合"];
+var errordata = ["連線失敗", "沒有接收到參數", "重複資料", "格式不符", "發生未知錯誤", "查無資料", "狀態不符合"];
+
+var fetchAPI_POST_head = {
+    method:"POST", 
+    mode: "cors", //需添加這段才能發送請求
+    headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-Type': "application/x-www-form-urlencoded"
+    },
+};
 
 window.onload = function () {
     var Menu = document.getElementById("Menu"),

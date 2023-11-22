@@ -210,6 +210,11 @@
                         console.log(pandas);           
                     }        
                 }
+            })
+            .catch(err => {
+                console.log(err);
+                var el = document.getElementById("list");
+                el.innerHTML="<td colspan='8' style='padding-left:5vw'>"+errordata[4]+"</td>";
             });
         };
 
@@ -282,6 +287,11 @@
                         console.log(pandas); 
                     }      
                 }
+            })
+            .catch(err => {
+                console.log(err);
+                var el = document.getElementById("list");
+                el.innerHTML="<td colspan='8' style='padding-left:5vw'>"+errordata[4]+"</td>";
             });
         };
 
@@ -353,6 +363,11 @@
                         console.log(pandas);                    
                     }        
                 }
+            })
+            .catch(err => {
+                console.log(err);
+                var el = document.getElementById("list");
+                el.innerHTML="<td colspan='8' style='padding-left:5vw'>"+errordata[4]+"</td>";
             });
         };
       

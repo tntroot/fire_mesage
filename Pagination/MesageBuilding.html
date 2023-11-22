@@ -234,6 +234,11 @@
                         PageNumber();                                             
                     }        
                 }
+            })
+            .catch(err => {
+                console.log(err);
+                var el = document.getElementById("list");
+                el.innerHTML="<td colspan='4' style='padding-left:5vw'>"+errordata[4]+"</td>";
             });
         }
 
@@ -320,6 +325,9 @@
                             
                         } 
                     }
+                })
+                .catch(err => {
+                    
                 });
             }else{
                 if(FireNumber_s[on_down].innerText<100){
@@ -362,11 +370,8 @@
             if(Building_error[0].innerText=="" && Building_error[1].innerText==""){
                 fetch(DataAPI+'correctBuilding.php',{
                 method:"POST", 
-                mode: "cors", //需添加這段才能發送請求
-                headers: {
-                    'Accept': 'application/json, text/plain, */*',
-                    'Content-Type': "application/x-www-form-urlencoded"
-                },
+                mode: fetchAPI_POST_head.mode, //需添加這段才能發送請求
+                headers: fetchAPI_POST_head.headers,
                 // 原本是 JSON 檔，需轉成 formdate 後台才接的到參數，jquery 會自動幫你轉
                 body:"Building="+post_supplier.dataset.postbuilding+
                     "&New_Building="+post_supplierbox[0].value+
@@ -390,6 +395,15 @@
                         post_check.style.padding="1vw 5vw 1vw 5vw";
                         setTimeout("location.href=''",3000); //三秒之後跳轉頁面
                     }
+                })
+                .catch(err => {
+                    post_check.style.display='block';
+
+                    post_supplier.style.display="none";
+                    post_check.innerHTML='<h2>'+'修改失敗'+'</h2>'+
+                        "<h2>"+errordata[4]+"</h2>"+
+                        "<button style='background-color: #333333;' onclick='location.href=&apos;&apos;'>"+"確定"+"</button>";
+                    post_check.style.padding="1vw 5vw 1vw 5vw";
                 });
             }
 
@@ -447,11 +461,8 @@
             var FireNumber_s=document.getElementsByClassName('FireNumber_s');
             fetch(DataAPI+'addBuilding.php',{
                 method:"POST", 
-                mode: "cors", //需添加這段才能發送請求
-                headers: {
-                    'Accept': 'application/json, text/plain, */*',
-                    'Content-Type': "application/x-www-form-urlencoded"
-                },
+                mode: fetchAPI_POST_head.mode, //需添加這段才能發送請求
+                headers: fetchAPI_POST_head.headers,
                 // 原本是 JSON 檔，需轉成 formdate 後台才接的到參數，jquery 會自動幫你轉
                 body:"Name="+post_supplierbox[2].value+
                     "&Short="+post_supplierbox[3].value+
@@ -476,6 +487,16 @@
                     post_check.style.padding="1vw 5vw 1vw 5vw";
                     setTimeout("location.href=''",3000); //三秒之後跳轉頁面
                 }
+            })
+            .catch(err => {
+                post_check.style.display='block';
+                
+                post_supplier[1].style.display="none";
+                post_supplier[2].style.display="none";
+                post_check.innerHTML='<h2>'+'新增失敗'+'</h2>'+
+                    "<h2>"+errordata[4]+"</h2>"+
+                    "<button class='insert_supplier_button' style='background-color: #333333;' onclick='location.href=&apos;&apos;'>"+"確定"+"</button>";
+                post_check.style.padding="1vw 5vw 1vw 5vw";
             }); 
         }
 

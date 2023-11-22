@@ -134,6 +134,11 @@
                         selectform.options[i+1].title=data["data"][i].Floor;                                     
                     }        
                 }
+            })
+            .catch(err => {
+                console.log(err);
+                var el = document.getElementById("list");
+                el.innerHTML=errordata[4];
             });
         }
 
@@ -200,6 +205,9 @@
                 }
                 el.innerHTML=str;
             
+            })
+            .catch(err => {
+                
             });
         };
         //按兩下編輯
@@ -215,11 +223,8 @@
 
                     fetch(DataAPI+'correctLocation.php',{
                         method:"POST", 
-                        mode: "cors", //需添加這段才能發送請求
-                        headers: {
-                            'Accept': 'application/json, text/plain, */*',
-                            'Content-Type': "application/x-www-form-urlencoded"
-                        },
+                        mode: fetchAPI_POST_head.mode, //需添加這段才能發送請求
+                        headers: fetchAPI_POST_head.headers,
                         // 原本是 JSON 檔，需轉成 formdate 後台才接的到參數，jquery 會自動幫你轉
                         body:"Building="+selectform+
                             "&Floor="+index.dataset.floor+
@@ -237,6 +242,11 @@
                             index.dataset.name=values;
                         }
                         two_number=1;
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        index.innerHTML=index.dataset.name;
+                        console.log(errordata[4]);
                     });   
                 };
                 index.innerHTML="";
@@ -257,11 +267,8 @@
 
                     fetch(DataAPI+'addLocation.php',{
                         method:"POST", 
-                        mode: "cors", //需添加這段才能發送請求
-                        headers: {
-                            'Accept': 'application/json, text/plain, */*',
-                            'Content-Type': "application/x-www-form-urlencoded"
-                        },
+                        mode: fetchAPI_POST_head.mode, //需添加這段才能發送請求
+                        headers: fetchAPI_POST_head.headers,
                         // 原本是 JSON 檔，需轉成 formdate 後台才接的到參數，jquery 會自動幫你轉
                         body:"Building="+selectform.value+
                             "&Floor="+index.dataset.floor+
@@ -312,11 +319,8 @@
 
             fetch(DataAPI+'ScrappedBox.php',{
                 method:"POST", 
-                mode: "cors", //需添加這段才能發送請求
-                headers: {
-                    'Accept': 'application/json, text/plain, */*',
-                    'Content-Type': "application/x-www-form-urlencoded"
-                },
+                mode: fetchAPI_POST_head.mode, //需添加這段才能發送請求
+                headers: fetchAPI_POST_head.headers,
                 // 原本是 JSON 檔，需轉成 formdate 後台才接的到參數，jquery 會自動幫你轉
                 body:"Num="+post_supplier[0].dataset.num
             })
@@ -335,6 +339,12 @@
                     post_check.style.padding="1vw 5vw 1vw 5vw";
                     setTimeout("Selectform(selectform.value,showContent.dataset.build_floor);post_check.style.display='none';bg_light.style.display='none'",1000); //1秒之後跳轉頁面
                 }
+            })
+            .catch(err => {
+                console.log(err);
+                post_check.innerHTML='<h2>'+'報廢失敗'+'</h2>'+"<h2>"+errordata[4]+"</h2>"+
+                    "<button style='background-color: #333333;' onclick='this.parentNode.style.display=&apos;none&apos;this.parentNode.parentNode.children[0].style.display=&apos;none&apos'>"+"確定"+"</button>";
+                post_check.style.padding="1vw 5vw 1vw 5vw";
             }); 
         }
 
