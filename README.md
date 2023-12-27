@@ -33,7 +33,7 @@
 
 &nbsp;
 
-<div style="width:600px">
+<div style="width:400px">
 <p align="center"><img src="Screan/image.png" width="600"></img></p>
 ▲ 滅火器選單頁，提供使用者在各項功能中進行切換
 
