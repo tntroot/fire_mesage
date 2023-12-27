@@ -28,3 +28,45 @@
 <p align="center"><img src="Screan/image-2.png" width="600" height="400"></p>
 
 4. 保存並重新啟動 Mysql
+
+## 系統展示
+
+<p align="center"><img src="Screan/image.png" width="600"></img></p>
+▲ 滅火器選單頁，提供使用者在各項功能中進行切換
+
+&nbsp;
+
+<p align="center"><img src="Screan/image3.png" width="300" height="150"></img></p>
+▲ 滅火器資訊頁，系統會顯示 30 天內即將過期的滅火器數量以及尚未完成維修的滅火器數量 
+
+&nbsp;
+
+<p align="center"><img src="Screan/image4.png" width="600" ></img></p>
+▲ 查詢閒置固定架頁，透過選單列進入後即可直接查詢，可在位置的下拉選單中選擇目標大樓，系統將會根據要求提供目標大樓內的閒置固定架資訊
+
+&nbsp;
+
+<p align="center"><img src="Screan/image5.png" width="600" ></img></p>
+▲ 查詢廢棄固定架頁，透過上方的閒置/廢棄按鈕進行切換，進入後可以知道過去廢棄的固定架資訊 
+
+&nbsp;
+
+<p align="center"><img src="Screan/image6.png" width="600" ></img></p>
+▲ 在查詢功能中勾選需要上傳資料並按下上傳，即可上傳至手機，上傳完成後會傳送成功資訊通知使用者
+
+&nbsp;
+
+<p align="center"><img src="Screan/image7.png" width="600" ></img></p>
+▲ 在查詢功能中勾選需要列印的目標再點選列印即可進行列印
+
+&nbsp;
+
+<p align="center" style="display: flex;"><img src="Screan/image8.png" width="200"></img>
+&nbsp;
+<img src="Screan/image9.png" width="200"></img></p>
+▲ 點選新增功能後可以選擇要新增的是滅火器廠商或是藥粉廠商，再輸入資料後系統將會跳出確認視窗讓使用者進行二次確認
+
+&nbsp;
+
+<p align="center"><img src="Screan/image10.png" width="200" ></img></p>
+▲ 當發現輸入資料錯誤時可以點選該筆資料進行修改，更改成功後系統會跳出更改成功並且直接顯示更改後資料
