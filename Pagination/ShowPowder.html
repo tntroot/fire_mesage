@@ -145,22 +145,22 @@
             <div onclick="resort_filter()" title="重製篩選選項">↻</div>
         </div>
         <h2 style="text-align: left;">請點選要顯示的欄位</h2>
-        <div style="border-bottom: black 2px solid;padding-bottom: 2vw;">
-            <span class="checked_head">
-                <input type="checkbox" checked="checked" onclick="filter_head(this)" value="類型">類型 
-            </span>
-            <span class="checked_head">
-                <input type="checkbox" checked="checked" onclick="filter_head(this)" value="狀態">狀態
-            </span>
-            <span class="checked_head">
-                <input type="checkbox" checked="checked" onclick="filter_head(this)" value="位置">位置
-            </span>
-            <span class="checked_head">
-                <input type="checkbox" checked="checked" onclick="filter_head(this)" value="滅火器到期日">滅火器到期日 
-            </span>
-            <span class="checked_head">
-                <input type="checkbox" checked="checked" onclick="filter_head(this)" value="換藥時間">換藥時間
-            </span>
+        <div style="border-bottom: black 2px solid;padding-bottom: 2vw;display: flex;align-items: center;">
+            <label for="類型" class="checked_head">
+                <input id="類型" type="checkbox" checked="checked" onclick="filter_head(this)" value="類型">類型 
+            </label>
+            <label for="狀態" class="checked_head">
+                <input id="狀態" type="checkbox" checked="checked" onclick="filter_head(this)" value="狀態">狀態
+            </label>
+            <label for="位置" class="checked_head">
+                <input id="位置" type="checkbox" checked="checked" onclick="filter_head(this)" value="位置">位置
+            </label>
+            <label for="滅火器到期日" class="checked_head">
+                <input id="滅火器到期日" type="checkbox" checked="checked" onclick="filter_head(this)" value="滅火器到期日">滅火器到期日 
+            </label>
+            <label for="換藥時間" class="checked_head">
+                <input id="換藥時間" type="checkbox" checked="checked" onclick="filter_head(this)" value="換藥時間">換藥時間
+            </label>
         </div>
         <h2 style="text-align: left;">請點選篩選資料的條件</h2>
         <div style="display: flex;margin-bottom: 2vw;">

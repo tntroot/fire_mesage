@@ -218,10 +218,21 @@
     accent-color: #17A2B8;
     padding-left: 0.5vw;
     font-size: 1.5vw;
+    display: flex;align-items: center;
+}
+.checked_head:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+}
+.checked_head:active {
+    transform: scale(0.95);
+    cursor: pointer;
 }
 
 .checked_head input {
-    zoom: 200%;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: block;
 }
 
 .select_Filter_Object {
@@ -332,7 +343,7 @@
     width: 1vw;
     height: 1vw;
     margin: 0vw;
-    border: #6D5BD0 6px solid;
+    border: #6D5BD0 4.5px solid;
     border-radius: 50vw;
     background-color: white;
     cursor: pointer;
