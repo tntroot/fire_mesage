@@ -31,6 +31,9 @@
 
 ## 系統展示
 
+&nbsp;
+
+<div style="width:800px">
 <p align="center"><img src="Screan/image.png" width="600"></img></p>
 ▲ 滅火器選單頁，提供使用者在各項功能中進行切換
 
@@ -70,3 +73,4 @@
 
 <p align="center"><img src="Screan/image10.png" width="200" ></img></p>
 ▲ 當發現輸入資料錯誤時可以點選該筆資料進行修改，更改成功後系統會跳出更改成功並且直接顯示更改後資料
+</div>
