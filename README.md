@@ -23,7 +23,7 @@
 <p align="center"><img src="Screenshots/image-1.png" width="600" height="400"></p>
 
 2. 用記事本開啟 my.ini
-3. 將 Mysql Post 改成 3308
+3. 將 Mysql Port 改成 3308
 
 <p align="center"><img src="Screenshots/image-2.png" width="600" height="400"></p>
 
