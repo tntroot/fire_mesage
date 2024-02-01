@@ -464,7 +464,7 @@
                         post_supplier.style.display="none";
                         post_check.innerHTML='<h2>'+'修改成功'+'</h2>'+"<img src='../IMG/ShowBox/Update_yes.png' width='75vw'>"; 
                         post_check.style.padding="1vw 5vw 1vw 5vw";
-                        setTimeout("location.href=''",3000); //三秒之後跳轉頁面
+                        setTimeout("location.href=''",1000); //三秒之後跳轉頁面
                     }
                 })
                 .catch(err => {
@@ -635,7 +635,7 @@
                     post_supplier[2].style.display="none";
                     post_check.innerHTML='<h2>'+'新增成功'+'</h2>'+"<img src='../IMG/ShowBox/Update_yes.png' width='75vw'>"; 
                     post_check.style.padding="1vw 5vw 1vw 5vw";
-                    setTimeout("location.href=''",3000); //三秒之後跳轉頁面
+                    setTimeout("location.href=''",1000); //三秒之後跳轉頁面
                 }
             })
             .catch(err => {
@@ -694,7 +694,7 @@
             if(update_yes1[0]==true){
                 post_check.innerHTML='<h2>'+'報廢成功'+'</h2>'+"<img src='../IMG/ShowBox/Update_yes.png' width='75vw'>"; 
                 post_check.style.padding="1vw 5vw 1vw 5vw";
-                setTimeout("location.href=''",3000); //三秒之後跳轉頁面
+                setTimeout("location.href=''",1000); //三秒之後跳轉頁面
             }else{
                 post_check.innerHTML='<h2>'+'報廢失敗'+'</h2>'+"<h2>"+update_error+"&nbsp;&nbsp;"+update_yes1[1]+"</h2>"+
                     "<button style='background-color: #333333;' onclick='location.href=&apos;&apos;'>"+"確定"+"</button>";
