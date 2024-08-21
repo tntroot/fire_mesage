@@ -8,12 +8,12 @@
 ## 安裝專案
 1. 下載並安裝 XAMPP、HeidiSQL
 2. 把專案放到 XAMPP 目錄的 htdocs 資料夾
-3. 開啟 HeidiSQL 並建立資料庫，設定如圖
+3. 在 XAMPP 控制面板中啟動 Apache 和 Mysql
+4. 開啟 HeidiSQL 並建立資料庫，設定如圖
 
 <p align="center"><img src="Screenshots/heidiSQL.png" width="600" height="400"></p>
 
-4. 將 Fire_Management.sql 匯入新建的資料庫中
-5. 在 XAMPP 控制面板中啟動 Apache 和 Mysql
+5. 將 Fire_Management.sql 匯入新建的資料庫中
 6. 在 瀏覽器中輸入 localhost/Fire_mesage/
 7. 大功告成
 
